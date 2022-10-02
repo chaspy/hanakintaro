@@ -12,10 +12,5 @@ export default Manifest({
   icon: 'assets/icon.png',
   workflows: [GreetingWorkflow],
   outgoingDomains: [],
-  botScopes: [
-    'commands',
-    'chat:write',
-    'chat:write.public',
-    'app_mentions:read',
-  ],
+  botScopes: ['chat:write', 'chat:write.public', 'app_mentions:read'],
 })
