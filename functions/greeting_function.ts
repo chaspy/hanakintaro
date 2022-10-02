@@ -13,10 +13,6 @@ export const GreetingFunctionDefinition = DefineFunction({
   source_file: 'functions/greeting_function.ts',
   input_parameters: {
     properties: {
-      recipient: {
-        type: Schema.slack.types.user_id,
-        description: 'Greeting recipient',
-      },
       message: {
         type: Schema.types.string,
         description: 'Message to the recipient',
@@ -36,9 +32,9 @@ export const GreetingFunctionDefinition = DefineFunction({
 })
 
 export default SlackFunction(GreetingFunctionDefinition, ({ inputs }) => {
-  const { recipient, message } = inputs
+  const { message } = inputs
   const salutations = ['Hello', 'Hi', 'Howdy', 'Hola', 'Salut']
   const salutation = salutations[Math.floor(Math.random() * salutations.length)]
-  const greeting = `${salutation}, <@${recipient}>! :wave: Someone sent the following greeting: \n\n>${message}`
+  const greeting = `${salutation}, :wave: Someone sent the following greeting: \n\n>${message}`
   return { outputs: { greeting } }
 })
