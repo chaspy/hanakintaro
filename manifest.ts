@@ -1,5 +1,5 @@
 import { Manifest } from 'deno-slack-sdk/mod.ts'
-import Workflow from './workflows/greeting_workflow.ts'
+import Workflow from './workflows/workflow.ts'
 
 /**
  * The app manifest contains the app's configuration. This

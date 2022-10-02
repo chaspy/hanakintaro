@@ -1,5 +1,5 @@
 import { Trigger } from 'deno-slack-api/types.ts'
-import Workflow from '../workflows/greeting_workflow.ts'
+import Workflow from '../workflows/workflow.ts'
 import env from '../env.ts'
 
 /**
