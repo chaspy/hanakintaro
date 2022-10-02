@@ -1,5 +1,5 @@
 import { DefineWorkflow, Schema } from 'deno-slack-sdk/mod.ts'
-import { GreetingFunctionDefinition } from '../functions/greeting_function.ts'
+import { ResponseFunctionDefinition } from '../functions/response.ts'
 
 /**
  * A Workflow is a set of steps that are executed in order.
@@ -8,8 +8,8 @@ import { GreetingFunctionDefinition } from '../functions/greeting_function.ts'
  */
 const Workflow = DefineWorkflow({
   callback_id: 'workflow',
-  title: 'Send a greeting',
-  description: 'Send a greeting to channel',
+  title: 'Send a message',
+  description: 'Send a message to channel',
   input_parameters: {
     properties: {
       text: {
@@ -23,13 +23,13 @@ const Workflow = DefineWorkflow({
   },
 })
 
-const FunctionStep = Workflow.addStep(GreetingFunctionDefinition, {
+const FunctionStep = Workflow.addStep(ResponseFunctionDefinition, {
   message: Workflow.inputs.text,
 })
 
 Workflow.addStep(Schema.slack.functions.SendMessage, {
   channel_id: Workflow.inputs.channelId,
-  message: FunctionStep.outputs.greeting,
+  message: FunctionStep.outputs.response,
 })
 
 export default Workflow

@@ -7,11 +7,11 @@ import env from '../env.ts'
  * be used independently or as steps in Workflows.
  * https://api.slack.com/future/functions/custom
  */
-export const GreetingFunctionDefinition = DefineFunction({
+export const ResponseFunctionDefinition = DefineFunction({
   callback_id: 'greeting_function',
   title: 'Generate a message',
   description: 'Generate a message',
-  source_file: 'functions/greeting_function.ts',
+  source_file: 'functions/response.ts',
   input_parameters: {
     properties: {
       message: {
@@ -23,16 +23,16 @@ export const GreetingFunctionDefinition = DefineFunction({
   },
   output_parameters: {
     properties: {
-      greeting: {
+      response: {
         type: Schema.types.string,
         description: 'Response from the bot',
       },
     },
-    required: ['greeting'],
+    required: ['response'],
   },
 })
 
-export default SlackFunction(GreetingFunctionDefinition, ({ inputs }) => {
+export default SlackFunction(ResponseFunctionDefinition, ({ inputs }) => {
   const { message } = inputs
   const answer = `${env.answer}`
 
@@ -44,7 +44,7 @@ export default SlackFunction(GreetingFunctionDefinition, ({ inputs }) => {
   console.log('answer: ' + answer)
   console.log('answer: ' + found[2])
 
-  const greeting = found[2] === answer ? `${env.message}` : '...'
+  const response = found[2] === answer ? `${env.message}` : '...'
 
-  return { outputs: { greeting } }
+  return { outputs: { response } }
 })
