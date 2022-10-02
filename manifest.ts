@@ -8,8 +8,7 @@ import GreetingWorkflow from './workflows/greeting_workflow.ts'
  */
 export default Manifest({
   name: 'hanakin',
-  description:
-    'A sample that demonstrates using a function, workflow and trigger to send a greeting',
+  description: 'Send comment if today is Hanakin or not',
   icon: 'assets/icon.png',
   workflows: [GreetingWorkflow],
   outgoingDomains: [],
