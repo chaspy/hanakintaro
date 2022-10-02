@@ -18,10 +18,7 @@ const greetingTrigger: Trigger<typeof GreetingWorkflow.definition> = {
   description: 'Send greeting to channel',
   workflow: '#/workflows/greeting_workflow',
   inputs: {
-    interactivity: {
-      value: '{{data.interactivity}}',
-    },
-    channel: {
+    channelId: {
       value: '{{data.channel_id}}',
     },
   },
