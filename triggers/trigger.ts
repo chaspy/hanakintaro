@@ -21,6 +21,9 @@ const greetingTrigger: Trigger<typeof Workflow.definition> = {
     channelId: {
       value: '{{data.channel_id}}',
     },
+    text: {
+      value: '{{data.test}}',
+    },
   },
 }
 
