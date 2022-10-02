@@ -14,9 +14,9 @@ const greetingTrigger: Trigger<typeof Workflow.definition> = {
     event_type: 'slack#/events/app_mentioned',
     channel_ids: [`${env.CHANNEL_ID}`],
   },
-  name: 'Send a greeting',
-  description: 'Send greeting to channel',
-  workflow: '#/workflows/greeting_workflow',
+  name: 'Send a message',
+  description: 'Send message to channel',
+  workflow: '#/workflows/workflow',
   inputs: {
     channelId: {
       value: '{{data.channel_id}}',
