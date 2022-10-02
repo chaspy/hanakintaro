@@ -23,13 +23,13 @@ const Workflow = DefineWorkflow({
   },
 })
 
-const greetingFunctionStep = Workflow.addStep(GreetingFunctionDefinition, {
+const FunctionStep = Workflow.addStep(GreetingFunctionDefinition, {
   message: Workflow.inputs.message,
 })
 
 Workflow.addStep(Schema.slack.functions.SendMessage, {
   channel_id: Workflow.inputs.channelId,
-  message: greetingFunctionStep.outputs.greeting,
+  message: FunctionStep.outputs.greeting,
 })
 
 export default Workflow
