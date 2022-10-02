@@ -44,7 +44,7 @@ export default SlackFunction(ResponseFunctionDefinition, ({ inputs }) => {
   console.log('answer: ' + answer)
   console.log('answer: ' + found[2])
 
-  const response = found[2] === answer ? `${env.message}` : '...'
+  const response = (found[2]= != null && found[2] === answer) ? `${env.message}` : '...'
 
   return { outputs: { response } }
 })
