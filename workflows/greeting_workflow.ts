@@ -6,7 +6,7 @@ import { GreetingFunctionDefinition } from '../functions/greeting_function.ts'
  * Each step in a Workflow is a function.
  * https://api.slack.com/future/workflows
  */
-const GreetingWorkflow = DefineWorkflow({
+const Workflow = DefineWorkflow({
   callback_id: 'greeting_workflow',
   title: 'Send a greeting',
   description: 'Send a greeting to channel',
@@ -26,16 +26,16 @@ const GreetingWorkflow = DefineWorkflow({
   },
 })
 
-const greetingFunctionStep = GreetingWorkflow.addStep(
+const greetingFunctionStep = Workflow.addStep(
   GreetingFunctionDefinition,
   {
-    message: GreetingWorkflow.inputs.message,
+    message: Workflow.inputs.message,
   }
 )
 
-GreetingWorkflow.addStep(Schema.slack.functions.SendMessage, {
-  channel_id: GreetingWorkflow.inputs.channelId,
+Workflow.addStep(Schema.slack.functions.SendMessage, {
+  channel_id: Workflow.inputs.channelId,
   message: greetingFunctionStep.outputs.greeting,
 })
 
-export default GreetingWorkflow
+export default Workflow

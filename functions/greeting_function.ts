@@ -1,4 +1,5 @@
 import { DefineFunction, Schema, SlackFunction } from 'deno-slack-sdk/mod.ts'
+import env from '../env.ts'
 
 /**
  * Functions are reusable building blocks of automation that accept
@@ -33,8 +34,6 @@ export const GreetingFunctionDefinition = DefineFunction({
 
 export default SlackFunction(GreetingFunctionDefinition, ({ inputs }) => {
   const { message } = inputs
-  const salutations = ['Hello', 'Hi', 'Howdy', 'Hola', 'Salut']
-  const salutation = salutations[Math.floor(Math.random() * salutations.length)]
-  const greeting = `${salutation}, :wave: Someone sent the following greeting: \n\n>${message}`
+  const greeting = `${env.message}`
   return { outputs: { greeting } }
 })

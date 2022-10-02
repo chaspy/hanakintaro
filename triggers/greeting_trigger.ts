@@ -1,5 +1,5 @@
 import { Trigger } from 'deno-slack-api/types.ts'
-import GreetingWorkflow from '../workflows/greeting_workflow.ts'
+import Workflow from '../workflows/greeting_workflow.ts'
 import env from '../env.ts'
 
 /**
@@ -8,7 +8,7 @@ import env from '../env.ts'
  * such as a user pressing a button or when a specific event occurs.
  * https://api.slack.com/future/triggers
  */
-const greetingTrigger: Trigger<typeof GreetingWorkflow.definition> = {
+const greetingTrigger: Trigger<typeof Workflow.definition> = {
   type: 'event',
   event: {
     event_type: 'slack#/events/app_mentioned',
