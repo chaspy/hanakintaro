@@ -36,15 +36,15 @@ export default SlackFunction(GreetingFunctionDefinition, ({ inputs }) => {
   const { message } = inputs
   const answer = `${env.answer}`
 
+  const regex = /^(<@.*>) (.*)$/
+  const found = message.match(regex)
+
+  // debug
   console.log('message:' + message)
   console.log('answer: ' + answer)
+  console.log('answer: ' + found[2])
 
-  if (message === answer) {
-    const greeting = `${env.message}`
-  } else {
-    const greeting = ''
-  }
+  const greeting = found[2] === answer ? `${env.message}` : '...'
 
-  const greeting = 'hello'
   return { outputs: { greeting } }
 })
