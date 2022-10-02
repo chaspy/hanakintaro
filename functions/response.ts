@@ -38,13 +38,14 @@ export default SlackFunction(ResponseFunctionDefinition, ({ inputs }) => {
 
   const regex = /^(<@.*>) (.*)$/
   const found = message.match(regex)
+  const msg = found && found[2]
 
   // debug
   console.log('message:' + message)
   console.log('answer: ' + answer)
-  console.log('answer: ' + found[2])
+  console.log('answer: ' + msg)
 
-  const response = (found[2]= != null && found[2] === answer) ? `${env.message}` : '...'
+  const response = msg === answer ? `${env.message}` : '...'
 
   return { outputs: { response } }
 })
