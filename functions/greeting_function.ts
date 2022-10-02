@@ -1,4 +1,4 @@
-import { DefineFunction, Schema, SlackFunction } from "deno-slack-sdk/mod.ts";
+import { DefineFunction, Schema, SlackFunction } from 'deno-slack-sdk/mod.ts'
 
 /**
  * Functions are reusable building blocks of automation that accept
@@ -7,43 +7,38 @@ import { DefineFunction, Schema, SlackFunction } from "deno-slack-sdk/mod.ts";
  * https://api.slack.com/future/functions/custom
  */
 export const GreetingFunctionDefinition = DefineFunction({
-  callback_id: "greeting_function",
-  title: "Generate a greeting",
-  description: "Generate a greeting",
-  source_file: "functions/greeting_function.ts",
+  callback_id: 'greeting_function',
+  title: 'Generate a greeting',
+  description: 'Generate a greeting',
+  source_file: 'functions/greeting_function.ts',
   input_parameters: {
     properties: {
       recipient: {
         type: Schema.slack.types.user_id,
-        description: "Greeting recipient",
+        description: 'Greeting recipient',
       },
       message: {
         type: Schema.types.string,
-        description: "Message to the recipient",
+        description: 'Message to the recipient',
       },
     },
-    required: ["message"],
+    required: ['message'],
   },
   output_parameters: {
     properties: {
       greeting: {
         type: Schema.types.string,
-        description: "Greeting for the recipient",
+        description: 'Greeting for the recipient',
       },
     },
-    required: ["greeting"],
+    required: ['greeting'],
   },
-});
+})
 
-export default SlackFunction(
-  GreetingFunctionDefinition,
-  ({ inputs }) => {
-    const { recipient, message } = inputs;
-    const salutations = ["Hello", "Hi", "Howdy", "Hola", "Salut"];
-    const salutation =
-      salutations[Math.floor(Math.random() * salutations.length)];
-    const greeting =
-      `${salutation}, <@${recipient}>! :wave: Someone sent the following greeting: \n\n>${message}`;
-    return { outputs: { greeting } };
-  },
-);
+export default SlackFunction(GreetingFunctionDefinition, ({ inputs }) => {
+  const { recipient, message } = inputs
+  const salutations = ['Hello', 'Hi', 'Howdy', 'Hola', 'Salut']
+  const salutation = salutations[Math.floor(Math.random() * salutations.length)]
+  const greeting = `${salutation}, <@${recipient}>! :wave: Someone sent the following greeting: \n\n>${message}`
+  return { outputs: { greeting } }
+})
