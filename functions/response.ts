@@ -43,7 +43,7 @@ export default SlackFunction(ResponseFunctionDefinition, ({ inputs }) => {
   // debug
   console.log('message:' + message)
   console.log('answer: ' + answer)
-  console.log('answer: ' + msg)
+  console.log('msg: ' + msg)
 
   const response = msg === answer ? `${env.message}` : '...'
 
