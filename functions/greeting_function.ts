@@ -16,7 +16,7 @@ export const GreetingFunctionDefinition = DefineFunction({
     properties: {
       message: {
         type: Schema.types.string,
-        description: 'Message to the recipient',
+        description: 'Message to the bot',
       },
     },
     required: ['message'],
@@ -25,7 +25,7 @@ export const GreetingFunctionDefinition = DefineFunction({
     properties: {
       greeting: {
         type: Schema.types.string,
-        description: 'Greeting for the recipient',
+        description: 'Response from the bot',
       },
     },
     required: ['greeting'],
@@ -34,6 +34,9 @@ export const GreetingFunctionDefinition = DefineFunction({
 
 export default SlackFunction(GreetingFunctionDefinition, ({ inputs }) => {
   const { message } = inputs
-  const greeting = `${env.message}`
+  //const greeting = `${env.message}`
+  console.log(message)
+  console.log('debug')
+  const greeting = 'hello'
   return { outputs: { greeting } }
 })
