@@ -8,8 +8,8 @@ import env from '../env.ts'
  * https://api.slack.com/future/functions/custom
  */
 export const ResponseFunctionDefinition = DefineFunction({
-  callback_id: 'greeting_function',
-  title: 'Generate a message',
+  callback_id: 'response_function',
+  title: 'Send a message',
   description: 'Generate a message',
   source_file: 'functions/response.ts',
   input_parameters: {
