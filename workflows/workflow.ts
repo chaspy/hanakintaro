@@ -12,7 +12,7 @@ const Workflow = DefineWorkflow({
   description: 'Send a greeting to channel',
   input_parameters: {
     properties: {
-      message: {
+      text: {
         type: Schema.types.string,
       },
       channelId: {
@@ -24,7 +24,7 @@ const Workflow = DefineWorkflow({
 })
 
 const FunctionStep = Workflow.addStep(GreetingFunctionDefinition, {
-  message: Workflow.inputs.message,
+  message: Workflow.inputs.text,
 })
 
 Workflow.addStep(Schema.slack.functions.SendMessage, {

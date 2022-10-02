@@ -22,7 +22,7 @@ const greetingTrigger: Trigger<typeof Workflow.definition> = {
       value: '{{data.channel_id}}',
     },
     text: {
-      value: '{{data.test}}',
+      value: '{{data.text}}',
     },
   },
 }
