@@ -7,7 +7,7 @@ import { GreetingFunctionDefinition } from '../functions/greeting_function.ts'
  * https://api.slack.com/future/workflows
  */
 const Workflow = DefineWorkflow({
-  callback_id: 'greeting_workflow',
+  callback_id: 'workflow',
   title: 'Send a greeting',
   description: 'Send a greeting to channel',
   input_parameters: {

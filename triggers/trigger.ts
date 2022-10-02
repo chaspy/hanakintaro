@@ -8,7 +8,7 @@ import env from '../env.ts'
  * such as a user pressing a button or when a specific event occurs.
  * https://api.slack.com/future/triggers
  */
-const greetingTrigger: Trigger<typeof Workflow.definition> = {
+const Trigger: Trigger<typeof Workflow.definition> = {
   type: 'event',
   event: {
     event_type: 'slack#/events/app_mentioned',
@@ -27,4 +27,4 @@ const greetingTrigger: Trigger<typeof Workflow.definition> = {
   },
 }
 
-export default greetingTrigger
+export default Trigger
