@@ -11,7 +11,7 @@ import env from '../env.ts'
 const greetingTrigger: Trigger<typeof GreetingWorkflow.definition> = {
   type: 'event',
   event: {
-    event_type: 'slack#/events/slack#/events/app_mentioned',
+    event_type: 'slack#/events/app_mentioned',
     channel_ids: [`${env.CHANNEL_ID}`],
   },
   name: 'Send a greeting',
