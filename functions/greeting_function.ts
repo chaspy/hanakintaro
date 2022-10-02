@@ -9,8 +9,8 @@ import env from '../env.ts'
  */
 export const GreetingFunctionDefinition = DefineFunction({
   callback_id: 'greeting_function',
-  title: 'Generate a greeting',
-  description: 'Generate a greeting',
+  title: 'Generate a message',
+  description: 'Generate a message',
   source_file: 'functions/greeting_function.ts',
   input_parameters: {
     properties: {
@@ -34,9 +34,17 @@ export const GreetingFunctionDefinition = DefineFunction({
 
 export default SlackFunction(GreetingFunctionDefinition, ({ inputs }) => {
   const { message } = inputs
-  //const greeting = `${env.message}`
-  console.log(message)
-  console.log('debug')
+  const answer = `${env.answer}`
+
+  console.log('message:' + message)
+  console.log('answer: ' + answer)
+
+  if (message === answer) {
+    const greeting = `${env.message}`
+  } else {
+    const greeting = ''
+  }
+
   const greeting = 'hello'
   return { outputs: { greeting } }
 })
