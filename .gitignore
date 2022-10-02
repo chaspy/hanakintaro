@@ -1,1 +1,4 @@
 env.ts
+
+.slack/apps.dev.json
+.slack/apps.json
