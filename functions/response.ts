@@ -40,12 +40,12 @@ export default SlackFunction(ResponseFunctionDefinition, ({ inputs }) => {
   const found = message.match(regex)
   const msg = found && found[2]
 
-  const date = new Date ()
+  const date = new Date()
   const dayOfWeek = date.getDay()
   const dayOfWeekStr = [ "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" ][dayOfWeek]
 
   // debug
-  console.log('message:' + message)
+  console.log('message: ' + message)
   console.log('answer: ' + answer)
   console.log('msg: ' + msg)
   console.log('dayOfweek: ' + dayOfWeek)
