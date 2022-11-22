@@ -47,6 +47,8 @@ export default SlackFunction(ResponseFunctionDefinition, ({ inputs }) => {
     dayOfWeek
   ]
 
+  const noMatchMsg = 'Please ask me, "@hanakin ' + `${env.answer}`
+
   // debug
   console.log('message:' + message)
   console.log('answer: ' + answer)
@@ -54,7 +56,7 @@ export default SlackFunction(ResponseFunctionDefinition, ({ inputs }) => {
   console.log('dayOfweek: ' + dayOfWeek)
   console.log('dayOfWeekStr: ' + dayOfWeekStr)
 
-  const response = msg === answer ? `${env.message[dayOfWeekStr]}` : '...'
+  const response = msg === answer ? `${env.message[dayOfWeekStr]}` : noMatchMsg
 
   return { outputs: { response } }
 })
