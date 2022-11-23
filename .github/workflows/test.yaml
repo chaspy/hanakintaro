@@ -36,3 +36,7 @@ jobs:
         run: | 
           cat cov_profile.lcov
           ls -la /home/runner/work/slack-hanakin-bot/slack-hanakin-bot/
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          file: ./cov_profile.lcov
