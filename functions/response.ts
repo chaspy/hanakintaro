@@ -1,4 +1,5 @@
 import { DefineFunction, Schema, SlackFunction } from 'deno-slack-sdk/mod.ts'
+import { datetime } from 'https://deno.land/x/ptera/mod.ts'
 import env from '../env.ts'
 
 /**
@@ -40,9 +41,13 @@ export default SlackFunction(ResponseFunctionDefinition, ({ inputs }) => {
   const found = message.match(regex)
   const msg = found && found[2]
 
-  const date = new Date()
-  const dayOfWeek = date.getDay()
-  const dayOfWeekStr = [ "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" ][dayOfWeek]
+  const dt = datetime().toZonedTime(`${env.timezone}`)
+  const dayOfWeek = dt.weekDay()
+  const dayOfWeekStr = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][
+    dayOfWeek
+  ]
+
+  const noMatchMsg = 'Please mention me, ' + `${env.answer}`
 
   // debug
   console.log('message: ' + message)
@@ -51,7 +56,7 @@ export default SlackFunction(ResponseFunctionDefinition, ({ inputs }) => {
   console.log('dayOfweek: ' + dayOfWeek)
   console.log('dayOfWeekStr: ' + dayOfWeekStr)
 
-  const response = msg === answer ? `${env.message[dayOfWeekStr]}` : '...'
+  const response = msg === answer ? `${env.message[dayOfWeekStr]}` : noMatchMsg
 
   return { outputs: { response } }
 })
