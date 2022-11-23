@@ -63,10 +63,7 @@ export default SlackFunction(ResponseFunctionDefinition, ({ inputs }) => {
     }
   }
 
-  const dayOfWeek = dt.weekDay()
-  const dayOfWeekStr = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][
-    dayOfWeek
-  ]
+  const dayOfWeekStr = getDayOfWeekStr(dt)
 
   // debug
   console.log('length: ' + res?.length)
@@ -78,7 +75,6 @@ export default SlackFunction(ResponseFunctionDefinition, ({ inputs }) => {
   console.log('msg: ' + msg)
   console.log('dt.day: ' + dt.day)
   console.log('dt.hour: ' + dt.hour)
-  console.log('dayOfweek: ' + dayOfWeek)
   console.log('dayOfWeekStr: ' + dayOfWeekStr)
 
   let response = ''
@@ -92,3 +88,12 @@ export default SlackFunction(ResponseFunctionDefinition, ({ inputs }) => {
 
   return { outputs: { response } }
 })
+
+export function getDayOfWeekStr(dt: DateTime): string {
+  const dayOfWeek = dt.weekDay()
+  const dayOfWeekStr = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][
+    dayOfWeek
+  ]
+
+  return dayOfWeekStr
+}
