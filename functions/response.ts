@@ -41,7 +41,10 @@ export default SlackFunction(ResponseFunctionDefinition, ({ inputs }) => {
   const found = message.match(regex)
   const matched = found && found[2]
   const msg = matched ?? ''
-  const noMatchMsg = 'Please mention me, ' + `${env.answer}`
+  let noMatchMsg =
+    'Please mention me, ' +
+    `${env.answer}` +
+    ' `今日花金？ Canada/Pacific` `今日花金？ EST` のように timezone 指定もできるよ'
 
   const res = msg.split(' ', 2)
   let tz = 'UTC' // default
