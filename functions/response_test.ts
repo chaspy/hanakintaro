@@ -5,14 +5,21 @@ import env from '../env.ts'
 
 const { createContext } = SlackFunctionTester('response')
 
+// when: @hanakin keyword
+// expect: return answer
 Deno.test('Response function test -- success', async () => {
   const inputs = { message: `<@ABCDEFGHIJK> ${env.answer}` }
   const { outputs } = await ResponseFunction(createContext({ inputs }))
-  assertEquals(outputs?.response.includes('花金'), true)
+  assertEquals(
+    Object.values(env.message).includes(`${outputs?.response}`),
+    true
+  )
 })
 
+// when: @hanakin non-keyword
+// expect: return usage
 Deno.test('Response function test -- silince', async () => {
   const inputs = { message: `<@ABCDEFGHIJK> ABCDEFGH` }
   const { outputs } = await ResponseFunction(createContext({ inputs }))
-  assertEquals(outputs?.response.includes(`${env.message}`), false)
+  assertEquals(outputs?.response, env.usage)
 })
