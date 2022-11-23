@@ -42,13 +42,7 @@ export default SlackFunction(ResponseFunctionDefinition, ({ inputs }) => {
   const msg = matched ?? ''
 
   const res = msg.split(' ', 2)
-  let tz = 'UTC' // default
-
-  if (res.length == 1) {
-    tz = `${env.timezone}`
-  } else {
-    tz = res[1]
-  }
+  const tz = getTimeZoneArg(res)
 
   let dt = datetime()
   try {
@@ -68,6 +62,14 @@ export default SlackFunction(ResponseFunctionDefinition, ({ inputs }) => {
 
   return { outputs: { response } }
 })
+
+function getTimeZoneArg(res: Array<string>): string {
+  if (res.length == 1) {
+    return `${env.timezone}`
+  } else {
+    return res[1]
+  }
+}
 
 function getResponse(dayOfWeek: string, res: string): string {
   const noMatchMsg = `${env.usage}`
