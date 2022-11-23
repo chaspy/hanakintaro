@@ -63,15 +63,16 @@ export default SlackFunction(ResponseFunctionDefinition, ({ inputs }) => {
     }
   }
 
-  const response = getResponse(dt, res[0])
+  const dayOfWeekStr = getDayOfWeekStr(dt)
+  const response = getResponse(dayOfWeekStr, res[0])
 
   return { outputs: { response } }
 })
 
-function getResponse(dt: DateTime, res: string): string {
+function getResponse(dayOfWeek: string, res: string): string {
   const noMatchMsg = `${env.usage}`
   const answer = `${env.answer}`
-  const dayOfWeekStr = getDayOfWeekStr(dt)
+  const dayOfWeekStr = dayOfWeek
 
   let response = ''
   if (res === answer) {
