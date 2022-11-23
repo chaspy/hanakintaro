@@ -1,0 +1,17 @@
+name: test
+
+on: pull_request
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: denoland/setup-deno@v1
+      - name: prepare env.ts
+        run: cp env.ts.sample env.ts
+      - name: deno test
+        run: |
+          deno test
