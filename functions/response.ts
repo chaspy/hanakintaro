@@ -42,6 +42,7 @@ export default SlackFunction(ResponseFunctionDefinition, ({ inputs }) => {
   const msg = matched ?? ''
 
   const res = msg.split(' ', 2)
+  const keyword = res[0]
   const tz = getTimeZoneArg(res)
 
   let dt = datetime()
@@ -58,11 +59,15 @@ export default SlackFunction(ResponseFunctionDefinition, ({ inputs }) => {
   }
 
   const dayOfWeekStr = getDayOfWeekStr(dt)
-  const response = getResponse(dayOfWeekStr, res[0])
+  const response = getResponse(dayOfWeekStr, keyword)
 
   return { outputs: { response } }
 })
 
+/**
+ * @param {string}  res - keyword by the user. Array of '@hanakin "今日花金？"'
+ * @returns {string} timezone string. If given by user, return it. Otherwise, return default.
+ */
 function getTimeZoneArg(res: Array<string>): string {
   if (res.length == 1) {
     return `${env.timezone}`
@@ -71,6 +76,11 @@ function getTimeZoneArg(res: Array<string>): string {
   }
 }
 
+/**
+ * @param {string}  dayOfWeek - day of week String. e.g. 'Mon', 'Tue'.
+ * @param {string}  keyword - keyword by the user. 2nd part of '@hanakin "今日花金？"'
+ * @returns {string} response by the bot.
+ */
 function getResponse(dayOfWeek: string, res: string): string {
   const noMatchMsg = `${env.usage}`
   const answer = `${env.answer}`
@@ -85,6 +95,10 @@ function getResponse(dayOfWeek: string, res: string): string {
   return response
 }
 
+/**
+ * @param {DateTime}  dt - DateTime.
+ * @returns {string} day-Of-Week String, like '1' (Monday), '3' (Tuesday)
+ */
 function getDayOfWeekStr(dt: DateTime): string {
   const dayOfWeek = dt.weekDay()
   const dayOfWeekStr = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][
