@@ -39,7 +39,8 @@ export default SlackFunction(ResponseFunctionDefinition, ({ inputs }) => {
 
   const regex = /^(<@.*>) (.*)$/
   const found = message.match(regex)
-  const msg = found && found[2]
+  const matched = found && found[2]
+  const msg = matched ?? ''
 
   const dt = datetime().toZonedTime(`${env.timezone}`)
   const dayOfWeek = dt.weekDay()
