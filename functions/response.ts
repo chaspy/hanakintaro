@@ -35,61 +35,60 @@ export const ResponseFunctionDefinition = DefineFunction({
 
 export default SlackFunction(ResponseFunctionDefinition, ({ inputs }) => {
   const { message } = inputs
-  const answer = `${env.answer}`
 
   const regex = /^(<@.*>) (.*)$/
   const found = message.match(regex)
   const matched = found && found[2]
   const msg = matched ?? ''
-  const noMatchMsg = `${env.usage}`
 
   const res = msg.split(' ', 2)
-  let tz = 'UTC' // default
+  const keyword = res[0]
 
-  if (res.length == 1) {
-    tz = `${env.timezone}`
-  } else {
-    tz = res[1]
-  }
+  // Given TZ by user, use it. Otherwise use default.
+  const tz = res[1] ? res[1] : `${env.timezone}`
 
   let dt = datetime()
-  let tzErrorMsg = ''
   try {
     dt = datetime().toZonedTime(tz)
   } catch (e) {
     if (e instanceof RangeError) {
-      console.log(`${tz} is invalid timezone`)
-      tzErrorMsg = `${tz} is invalid timezone`
+      const response = `${tz} is invalid timezone`
+
+      // early return
+      return { outputs: { response } }
     }
   }
 
   const dayOfWeekStr = getDayOfWeekStr(dt)
-
-  // debug
-  console.log('length: ' + res?.length)
-  console.log('res[0]: ' + res[0])
-  console.log('res[1]: ' + res[1])
-  console.log('tz: ' + tz)
-  console.log('message: ' + message)
-  console.log('answer: ' + answer)
-  console.log('msg: ' + msg)
-  console.log('dt.day: ' + dt.day)
-  console.log('dt.hour: ' + dt.hour)
-  console.log('dayOfWeekStr: ' + dayOfWeekStr)
-
-  let response = ''
-  if (tzErrorMsg) {
-    response = tzErrorMsg
-  } else if (res[0] === answer) {
-    response = `${env.message[dayOfWeekStr]}`
-  } else {
-    response = noMatchMsg
-  }
+  const response = getResponse(dayOfWeekStr, keyword)
 
   return { outputs: { response } }
 })
 
-export function getDayOfWeekStr(dt: DateTime): string {
+/**
+ * @param {string}  dayOfWeek - day of week String. e.g. 'Mon', 'Tue'.
+ * @param {string}  keyword - keyword by the user. 2nd part of '@hanakin "今日花金？"'
+ * @returns {string} response by the bot.
+ */
+function getResponse(dayOfWeek: string, res: string): string {
+  const noMatchMsg = `${env.usage}`
+  const answer = `${env.answer}`
+  const dayOfWeekStr = dayOfWeek
+
+  let response = ''
+  if (res === answer) {
+    response = `${env.message[dayOfWeekStr]}`
+  } else {
+    response = noMatchMsg
+  }
+  return response
+}
+
+/**
+ * @param {DateTime}  dt - DateTime.
+ * @returns {string} day-Of-Week String, like '1' (Monday), '3' (Tuesday)
+ */
+function getDayOfWeekStr(dt: DateTime): string {
   const dayOfWeek = dt.weekDay()
   const dayOfWeekStr = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][
     dayOfWeek

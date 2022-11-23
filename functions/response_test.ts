@@ -10,7 +10,6 @@ const { createContext } = SlackFunctionTester('response')
 Deno.test('Response function test -- keyword', async () => {
   const inputs = { message: `<ABCDEFGHIJK> ${env.answer}` }
   const { outputs } = await ResponseFunction(createContext({ inputs }))
-  console.log(outputs?.response)
   assertEquals(outputs?.response, env.usage)
 })
 
