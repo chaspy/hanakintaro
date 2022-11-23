@@ -60,12 +60,11 @@ export default SlackFunction(ResponseFunctionDefinition, ({ inputs }) => {
     dayOfWeek
   ]
 
+  // debug
   console.log('length: ' + res?.length)
   console.log('res[0]: ' + res[0])
   console.log('res[1]: ' + res[1])
   console.log('tz: ' + tz)
-
-  // debug
   console.log('message: ' + message)
   console.log('answer: ' + answer)
   console.log('msg: ' + msg)
