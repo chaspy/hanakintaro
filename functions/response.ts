@@ -41,6 +41,7 @@ export default SlackFunction(ResponseFunctionDefinition, ({ inputs }) => {
   const found = message.match(regex)
   const matched = found && found[2]
   const msg = matched ?? ''
+  const noMatchMsg = 'Please mention me, ' + `${env.answer}`
 
   const res = msg.split(' ', 2)
   let tz = 'UTC' // default
@@ -59,7 +60,6 @@ export default SlackFunction(ResponseFunctionDefinition, ({ inputs }) => {
     dayOfWeek
   ]
 
-  const noMatchMsg = 'Please mention me, ' + `${env.answer}`
   console.log('length: ' + res?.length)
   console.log('res[0]: ' + res[0])
   console.log('res[1]: ' + res[1])
