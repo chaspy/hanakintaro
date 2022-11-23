@@ -51,10 +51,8 @@ export default SlackFunction(ResponseFunctionDefinition, ({ inputs }) => {
 
   if (res.length == 1) {
     tz = `${env.timezone}`
-  } else if (res[1].match(/[A-Z]{3}/)) {
-    tz = res[1]
   } else {
-    tz = `${env.timezone}`
+    tz = res[1]
   }
 
   const dt = datetime().toZonedTime(tz)
