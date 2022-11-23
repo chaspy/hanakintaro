@@ -1,5 +1,5 @@
 import { DefineFunction, Schema, SlackFunction } from 'deno-slack-sdk/mod.ts'
-import { datetime } from 'ptera/mod.ts'
+import { DateTime, datetime } from 'ptera/mod.ts'
 import env from '../env.ts'
 
 /**
@@ -41,10 +41,7 @@ export default SlackFunction(ResponseFunctionDefinition, ({ inputs }) => {
   const found = message.match(regex)
   const matched = found && found[2]
   const msg = matched ?? ''
-  let noMatchMsg =
-    'Please mention me, ' +
-    `${env.answer}` +
-    ' `今日花金？ Canada/Pacific` `今日花金？ EST` のように timezone 指定もできるよ'
+  let noMatchMsg = `${env.usage}`
 
   const res = msg.split(' ', 2)
   let tz = 'UTC' // default
@@ -66,10 +63,7 @@ export default SlackFunction(ResponseFunctionDefinition, ({ inputs }) => {
     }
   }
 
-  const dayOfWeek = dt.weekDay()
-  const dayOfWeekStr = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][
-    dayOfWeek
-  ]
+  const dayOfWeekStr = getDayOfWeekStr(dt)
 
   // debug
   console.log('length: ' + res?.length)
@@ -81,7 +75,6 @@ export default SlackFunction(ResponseFunctionDefinition, ({ inputs }) => {
   console.log('msg: ' + msg)
   console.log('dt.day: ' + dt.day)
   console.log('dt.hour: ' + dt.hour)
-  console.log('dayOfweek: ' + dayOfWeek)
   console.log('dayOfWeekStr: ' + dayOfWeekStr)
 
   let response = ''
@@ -95,3 +88,12 @@ export default SlackFunction(ResponseFunctionDefinition, ({ inputs }) => {
 
   return { outputs: { response } }
 })
+
+export function getDayOfWeekStr(dt: DateTime): string {
+  const dayOfWeek = dt.weekDay()
+  const dayOfWeekStr = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][
+    dayOfWeek
+  ]
+
+  return dayOfWeekStr
+}
