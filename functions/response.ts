@@ -58,7 +58,7 @@ export default SlackFunction(ResponseFunctionDefinition, ({ inputs }) => {
   let dt = datetime()
   let tzErrorMsg = ''
   try {
-    const dt = datetime().toZonedTime(tz)
+    dt = datetime().toZonedTime(tz)
   } catch (e) {
     if (e instanceof RangeError) {
       console.log(`${tz} is invalid timezone`)
