@@ -7,7 +7,7 @@ const { createContext } = SlackFunctionTester('response')
 
 // when: @hanakin keyword
 // expect: return answer
-Deno.test('Response function test -- success', async () => {
+Deno.test('Response function test -- keyword', async () => {
   const inputs = { message: `<@ABCDEFGHIJK> ${env.answer}` }
   const { outputs } = await ResponseFunction(createContext({ inputs }))
   assertEquals(
@@ -18,7 +18,7 @@ Deno.test('Response function test -- success', async () => {
 
 // when: @hanakin non-keyword
 // expect: return usage
-Deno.test('Response function test -- silince', async () => {
+Deno.test('Response function test -- non-keyword', async () => {
   const inputs = { message: `<@ABCDEFGHIJK> ABCDEFGH` }
   const { outputs } = await ResponseFunction(createContext({ inputs }))
   assertEquals(outputs?.response, env.usage)
