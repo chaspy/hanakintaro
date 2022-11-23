@@ -35,13 +35,11 @@ export const ResponseFunctionDefinition = DefineFunction({
 
 export default SlackFunction(ResponseFunctionDefinition, ({ inputs }) => {
   const { message } = inputs
-  const answer = `${env.answer}`
 
   const regex = /^(<@.*>) (.*)$/
   const found = message.match(regex)
   const matched = found && found[2]
   const msg = matched ?? ''
-  const noMatchMsg = `${env.usage}`
 
   const res = msg.split(' ', 2)
   let tz = 'UTC' // default
@@ -63,31 +61,36 @@ export default SlackFunction(ResponseFunctionDefinition, ({ inputs }) => {
     }
   }
 
-  const dayOfWeekStr = getDayOfWeekStr(dt)
-
   // debug
   console.log('length: ' + res?.length)
   console.log('res[0]: ' + res[0])
   console.log('res[1]: ' + res[1])
   console.log('tz: ' + tz)
   console.log('message: ' + message)
-  console.log('answer: ' + answer)
   console.log('msg: ' + msg)
   console.log('dt.day: ' + dt.day)
   console.log('dt.hour: ' + dt.hour)
-  console.log('dayOfWeekStr: ' + dayOfWeekStr)
+
+  const response = getResponse(dt, tzErrorMsg, res[0])
+
+  return { outputs: { response } }
+})
+
+function getResponse(dt: DateTime, tzerror: string, res: string): string {
+  const noMatchMsg = `${env.usage}`
+  const answer = `${env.answer}`
+  const dayOfWeekStr = getDayOfWeekStr(dt)
 
   let response = ''
-  if (tzErrorMsg) {
-    response = tzErrorMsg
-  } else if (res[0] === answer) {
+  if (tzerror) {
+    response = tzerror
+  } else if (res === answer) {
     response = `${env.message[dayOfWeekStr]}`
   } else {
     response = noMatchMsg
   }
-
-  return { outputs: { response } }
-})
+  return response
+}
 
 function getDayOfWeekStr(dt: DateTime): string {
   const dayOfWeek = dt.weekDay()
