@@ -33,4 +33,6 @@ jobs:
           args: >
             -Dsonar.verbose=true
       - name: debug
-        run: cat cov_profile.lcov
+        run: | 
+          cat cov_profile.lcov
+          ls -la /home/runner/work/slack-hanakin-bot/slack-hanakin-bot/
