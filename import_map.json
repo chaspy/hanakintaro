@@ -2,6 +2,7 @@
   "imports": {
     "deno-slack-sdk/": "https://deno.land/x/deno_slack_sdk@1.4.2/",
     "deno-slack-api/": "https://deno.land/x/deno_slack_api@1.4.0/",
-    "ptera/": "https://deno.land/x/ptera@v1.0.2/"
+    "ptera/": "https://deno.land/x/ptera@v1.0.2/",
+    "std/": "https://deno.land/std@0.153.0/"
   }
 }
