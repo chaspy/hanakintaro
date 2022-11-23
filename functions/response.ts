@@ -42,8 +42,18 @@ export default SlackFunction(ResponseFunctionDefinition, ({ inputs }) => {
   const matched = found && found[2]
   const msg = matched ?? ''
 
-  const dt = datetime().toZonedTime(`${env.timezone}`)
   const res = msg.split(' ', 2)
+  let tz = 'UTC' // default
+
+  if (res.length == 1) {
+    tz = `${env.timezone}`
+  } else if (res[1].match(/[A-Z]{3}/)) {
+    tz = res[1]
+  } else {
+    tz = `${env.timezone}`
+  }
+
+  const dt = datetime().toZonedTime(tz)
   const dayOfWeek = dt.weekDay()
   const dayOfWeekStr = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][
     dayOfWeek
@@ -53,11 +63,14 @@ export default SlackFunction(ResponseFunctionDefinition, ({ inputs }) => {
   console.log('length: ' + res?.length)
   console.log('res[0]: ' + res[0])
   console.log('res[1]: ' + res[1])
+  console.log('tz: ' + tz)
 
   // debug
   console.log('message: ' + message)
   console.log('answer: ' + answer)
   console.log('msg: ' + msg)
+  console.log('dt.day: ' + dt.day)
+  console.log('dt.hour: ' + dt.hour)
   console.log('dayOfweek: ' + dayOfWeek)
   console.log('dayOfWeekStr: ' + dayOfWeekStr)
 
