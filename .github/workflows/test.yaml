@@ -32,11 +32,9 @@ jobs:
           projectBaseDir: /home/runner/work/slack-hanakin-bot/slack-hanakin-bot/
           args: >
             -Dsonar.verbose=true
-      - name: debug
-        run: | 
-          cat cov_profile.lcov
-          ls -la /home/runner/work/slack-hanakin-bot/slack-hanakin-bot/
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
         with:
           file: ./cov_profile.lcov
+          fail_ci_if_error: true
+          verbose: true
