@@ -18,15 +18,31 @@ Deno.test('Response function test -- keyword', async () => {
 
 // when: @hanakin keyword timezone
 // expect: return answer
-Deno.test('Response function test -- keyword with timezone', async () => {
-  const inputs = { message: `<@ABCDEFGHIJK> ${env.answer} JST` }
-  const { outputs } = await ResponseFunction(createContext({ inputs }))
-  assertEquals(
-    Object.values(env.message).includes(`${outputs?.response}`),
-    true
-  )
-})
+Deno.test(
+  'Response function test -- keyword with valid timezone (short name)',
+  async () => {
+    const inputs = { message: `<@ABCDEFGHIJK> ${env.answer} JST` }
+    const { outputs } = await ResponseFunction(createContext({ inputs }))
+    assertEquals(
+      Object.values(env.message).includes(`${outputs?.response}`),
+      true
+    )
+  }
+)
 
+// when: @hanakin keyword timezone
+// expect: return answer
+Deno.test(
+  'Response function test -- keyword with valid timezone (long name)',
+  async () => {
+    const inputs = { message: `<@ABCDEFGHIJK> ${env.answer} Canada/Pacific` }
+    const { outputs } = await ResponseFunction(createContext({ inputs }))
+    assertEquals(
+      Object.values(env.message).includes(`${outputs?.response}`),
+      true
+    )
+  }
+)
 // when: @hanakin keyword invalid-timezone
 // expect: return error message
 Deno.test(
