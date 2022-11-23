@@ -39,24 +39,59 @@ export default SlackFunction(ResponseFunctionDefinition, ({ inputs }) => {
 
   const regex = /^(<@.*>) (.*)$/
   const found = message.match(regex)
-  const msg = found && found[2]
+  const matched = found && found[2]
+  const msg = matched ?? ''
+  let noMatchMsg =
+    'Please mention me, ' +
+    `${env.answer}` +
+    ' `今日花金？ Canada/Pacific` `今日花金？ EST` のように timezone 指定もできるよ'
 
-  const dt = datetime().toZonedTime(`${env.timezone}`)
+  const res = msg.split(' ', 2)
+  let tz = 'UTC' // default
+
+  if (res.length == 1) {
+    tz = `${env.timezone}`
+  } else {
+    tz = res[1]
+  }
+
+  let dt = datetime()
+  let tzErrorMsg = ''
+  try {
+    dt = datetime().toZonedTime(tz)
+  } catch (e) {
+    if (e instanceof RangeError) {
+      console.log(`${tz} is invalid timezone`)
+      tzErrorMsg = `${tz} is invalid timezone`
+    }
+  }
+
   const dayOfWeek = dt.weekDay()
   const dayOfWeekStr = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][
     dayOfWeek
   ]
 
-  const noMatchMsg = 'Please mention me, ' + `${env.answer}`
-
   // debug
+  console.log('length: ' + res?.length)
+  console.log('res[0]: ' + res[0])
+  console.log('res[1]: ' + res[1])
+  console.log('tz: ' + tz)
   console.log('message: ' + message)
   console.log('answer: ' + answer)
   console.log('msg: ' + msg)
+  console.log('dt.day: ' + dt.day)
+  console.log('dt.hour: ' + dt.hour)
   console.log('dayOfweek: ' + dayOfWeek)
   console.log('dayOfWeekStr: ' + dayOfWeekStr)
 
-  const response = msg === answer ? `${env.message[dayOfWeekStr]}` : noMatchMsg
+  let response = ''
+  if (tzErrorMsg) {
+    response = tzErrorMsg
+  } else if (res[0] === answer) {
+    response = `${env.message[dayOfWeekStr]}`
+  } else {
+    response = noMatchMsg
+  }
 
   return { outputs: { response } }
 })
