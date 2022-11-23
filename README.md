@@ -8,6 +8,14 @@ Depending on the day of the week, the bot will reply whether today is Hanakin ([
 
 ![hanakin.png](image/hanakin.png)
 
+### Support Timezone
+
+The bot can reply whether or not it is Hanakin in the specified timezone. The timezone is specified in the second argument. 
+
+![timezone.png](image/timezone.png)
+
+The default value can be set by `env.timezone` .
+
 ## Development
 
 ### Work on new Slack platform
@@ -27,3 +35,4 @@ slack run
 ```
 slack deploy
 ```
+
