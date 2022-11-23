@@ -41,7 +41,7 @@ export default SlackFunction(ResponseFunctionDefinition, ({ inputs }) => {
   const found = message.match(regex)
   const matched = found && found[2]
   const msg = matched ?? ''
-  let noMatchMsg = `${env.usage}`
+  const noMatchMsg = `${env.usage}`
 
   const res = msg.split(' ', 2)
   let tz = 'UTC' // default
