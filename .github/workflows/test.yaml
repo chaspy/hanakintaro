@@ -1,6 +1,11 @@
 name: test
 
-on: push
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types: [opened, synchronize, reopened]
 
 jobs:
   test:
@@ -23,3 +28,13 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          projectBaseDir: /home/runner/work/slack-hanakin-bot/slack-hanakin-bot/
+          args: >
+            -Dsonar.verbose=true
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          file: ./cov_profile.lcov
+          fail_ci_if_error: true
+          verbose: true
