@@ -32,3 +32,5 @@ jobs:
           projectBaseDir: /github/workspace/
           args: >
             -Dsonar.verbose=true
+      - name: debug
+        run: cat cov_profile.lcov
