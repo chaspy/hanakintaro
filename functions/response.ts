@@ -43,7 +43,9 @@ export default SlackFunction(ResponseFunctionDefinition, ({ inputs }) => {
 
   const res = msg.split(' ', 2)
   const keyword = res[0]
-  const tz = getTimeZoneArg(res[1])
+
+  // Given TZ by user, use it. Otherwise use default.
+  const tz = res[1] ? res[1] : `${env.timezone}`
 
   let dt = datetime()
   try {
@@ -62,18 +64,6 @@ export default SlackFunction(ResponseFunctionDefinition, ({ inputs }) => {
 
   return { outputs: { response } }
 })
-
-/**
- * @param {string}  res - keyword by the user. Array of '@hanakin "今日花金？"'
- * @returns {string} timezone string. If given by user, return it. Otherwise, return default.
- */
-function getTimeZoneArg(res: string): string {
-  if (res) {
-    return res
-  } else {
-    return `${env.timezone}`
-  }
-}
 
 /**
  * @param {string}  dayOfWeek - day of week String. e.g. 'Mon', 'Tue'.
