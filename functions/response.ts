@@ -50,7 +50,7 @@ export default SlackFunction(ResponseFunctionDefinition, ({ inputs }) => {
   const noMatchMsg = 'Please mention me, ' + `${env.answer}`
 
   // debug
-  console.log('message:' + message)
+  console.log('message: ' + message)
   console.log('answer: ' + answer)
   console.log('msg: ' + msg)
   console.log('dayOfweek: ' + dayOfWeek)
