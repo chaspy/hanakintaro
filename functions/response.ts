@@ -89,7 +89,7 @@ export default SlackFunction(ResponseFunctionDefinition, ({ inputs }) => {
   return { outputs: { response } }
 })
 
-export function getDayOfWeekStr(dt: DateTime): string {
+function getDayOfWeekStr(dt: DateTime): string {
   const dayOfWeek = dt.weekDay()
   const dayOfWeekStr = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][
     dayOfWeek
