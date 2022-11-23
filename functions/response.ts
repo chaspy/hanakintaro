@@ -63,16 +63,6 @@ export default SlackFunction(ResponseFunctionDefinition, ({ inputs }) => {
     }
   }
 
-  // debug
-  console.log('length: ' + res?.length)
-  console.log('res[0]: ' + res[0])
-  console.log('res[1]: ' + res[1])
-  console.log('tz: ' + tz)
-  console.log('message: ' + message)
-  console.log('msg: ' + msg)
-  console.log('dt.day: ' + dt.day)
-  console.log('dt.hour: ' + dt.hour)
-
   const response = getResponse(dt, res[0])
 
   return { outputs: { response } }
