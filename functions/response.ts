@@ -51,13 +51,15 @@ export default SlackFunction(ResponseFunctionDefinition, ({ inputs }) => {
   }
 
   let dt = datetime()
-  let tzErrorMsg = ''
   try {
     dt = datetime().toZonedTime(tz)
   } catch (e) {
     if (e instanceof RangeError) {
       console.log(`${tz} is invalid timezone`)
-      tzErrorMsg = `${tz} is invalid timezone`
+      const response = `${tz} is invalid timezone`
+
+      // early return
+      return { outputs: { response } }
     }
   }
 
@@ -71,20 +73,18 @@ export default SlackFunction(ResponseFunctionDefinition, ({ inputs }) => {
   console.log('dt.day: ' + dt.day)
   console.log('dt.hour: ' + dt.hour)
 
-  const response = getResponse(dt, tzErrorMsg, res[0])
+  const response = getResponse(dt, res[0])
 
   return { outputs: { response } }
 })
 
-function getResponse(dt: DateTime, tzerror: string, res: string): string {
+function getResponse(dt: DateTime, res: string): string {
   const noMatchMsg = `${env.usage}`
   const answer = `${env.answer}`
   const dayOfWeekStr = getDayOfWeekStr(dt)
 
   let response = ''
-  if (tzerror) {
-    response = tzerror
-  } else if (res === answer) {
+  if (res === answer) {
     response = `${env.message[dayOfWeekStr]}`
   } else {
     response = noMatchMsg
