@@ -43,12 +43,16 @@ export default SlackFunction(ResponseFunctionDefinition, ({ inputs }) => {
   const msg = matched ?? ''
 
   const dt = datetime().toZonedTime(`${env.timezone}`)
+  const res = msg.split(' ', 2)
   const dayOfWeek = dt.weekDay()
   const dayOfWeekStr = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][
     dayOfWeek
   ]
 
   const noMatchMsg = 'Please mention me, ' + `${env.answer}`
+  console.log('length: ' + res?.length)
+  console.log('res[0]: ' + res[0])
+  console.log('res[1]: ' + res[1])
 
   // debug
   console.log('message: ' + message)
