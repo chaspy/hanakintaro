@@ -80,3 +80,32 @@ Deno.test('Response function test -- non-keyword', async () => {
   const { outputs } = await ResponseFunction(createContext({ inputs }))
   assertEquals(outputs?.response, env.usage)
 })
+
+// when: @hanakin 今日目黒で花金?
+// expect: return recomended-bar at 目黒
+Deno.test('Response function test -- keyword with place', async () => {
+  // generate test data
+  const answerArray: string[] = []
+  const array = env.recommended_bar['目黒']
+  array.forEach((e) => {
+    answerArray.push(
+      '今日は花金！' + e.name + 'で' + e.main + 'を飲もう！' + e.url
+    )
+  })
+
+  // test
+  const inputs = { message: `<@ABCDEFGHIJK> 今日目黒で花金?` }
+  const { outputs } = await ResponseFunction(createContext({ inputs }))
+  assertEquals(answerArray.includes(`${outputs?.response}`), true)
+})
+
+// when: @hanakin 今日福岡で花金?
+// expect: return usage
+Deno.test('Response function test -- keyword with wrong place', async () => {
+  const inputs = { message: `<@ABCDEFGHIJK> 今日福岡で花金?` }
+  const { outputs } = await ResponseFunction(createContext({ inputs }))
+  assertEquals(
+    outputs?.response,
+    '福岡は登録されていないみたいよ。https://github.com/chaspy/slack-hanakin-bot/blob/main/env.ts.sample におすすめの店を追加しよう'
+  )
+})
