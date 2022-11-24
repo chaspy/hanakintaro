@@ -12,13 +12,19 @@ Depending on the day of the week, the bot will reply whether today is Hanakin ([
 
 ![hanakin.png](assets/hanakin.png)
 
-### Support Timezone
+### Timezone Support
 
 The bot can reply whether or not it is Hanakin in the specified timezone. The timezone is specified in the second argument. 
 
 ![timezone.png](assets/timezone.png)
 
 The default value can be set by `env.timezone` .
+
+### Suggest Recommended Place
+
+The bot will reply a recommended place for drinking. The data source is [env.ts.sample](https://github.com/chaspy/slack-hanakin-bot/env.ts.sample)
+
+![recommend.png](assets/recommend.png)
 
 ## Development
 
