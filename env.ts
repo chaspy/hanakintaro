@@ -42,7 +42,6 @@ const hanakinBar: hanakinBars = {
 }
 
 export default {
-  CHANNEL_ID: 'ABCDEFGH',
   message: hanakinResponse,
   keyword: ['今日花金？', '今日花金?'],
   timezone: 'Asia/Tokyo',
