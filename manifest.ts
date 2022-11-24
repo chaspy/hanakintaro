@@ -7,7 +7,7 @@ import Workflow from './workflows/workflow.ts'
  * https://api.slack.com/future/manifest
  */
 export default Manifest({
-  name: 'hanakin',
+  name: 'hanakintaro',
   description: 'Send comment if today is Hanakin or not',
   icon: 'assets/hanakintaro-face.png',
   workflows: [Workflow],
