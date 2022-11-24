@@ -37,17 +37,9 @@ export const ResponseFunctionDefinition = DefineFunction({
 export default SlackFunction(ResponseFunctionDefinition, ({ inputs }) => {
   const { message } = inputs
 
-  const regex = /^(<@.*>) (.*)$/
-  const found = message.match(regex)
-  const matched = found && found[2]
-  const msg = matched ?? ''
-
-  const res = msg.split(' ', 2)
-  const keyword = res[0]
-
-  // Logic for Timezone
-  // Given TZ by user, use it. Otherwise use default.
-  const tz = res[1] ? res[1] : `${env.timezone}`
+  const parsedMsg = parseInputs(message)
+  const keyword = parsedMsg[0]
+  const tz = checkTimezone(parsedMsg[1])
 
   let dt = datetime()
   try {
@@ -81,6 +73,21 @@ export default SlackFunction(ResponseFunctionDefinition, ({ inputs }) => {
     return { outputs: { response } }
   }
 })
+
+function checkTimezone(tz: string): string{
+  const ret = tz ? tz : `${env.timezone}`
+  return ret
+}
+
+function parseInputs(input: string):string[]{
+  const regex = /^(<@.*>) (.*)$/
+  const found = input.match(regex)
+  const matched = found && found[2]
+  const msg = matched ?? ''
+
+  const res = msg.split(' ', 2)
+  return [res[0],res[1]]
+}
 
 function getRecommendedBar(place: string): string {
   const info = env.recommended_bar[place]
