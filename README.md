@@ -22,7 +22,7 @@ The default value can be set by `env.timezone` .
 
 ### Suggest Recommended Place
 
-The bot will reply a recommended place for drinking. The data source is [env.ts.sample](https://github.com/chaspy/hanakintaro/env.ts.sample)
+The bot will reply a recommended place for drinking. The data source is [env.ts](https://github.com/chaspy/hanakintaro/env.ts)
 
 ![recommend.png](assets/recommend.png)
 
@@ -35,8 +35,6 @@ This bot will work on [new Slack platform](https://api.slack.com/future?utm_medi
 ### Local development
 
 ```
-cp env.ts.sample env.ts
-# edit env.ts
 slack run
 ```
 
@@ -44,6 +42,12 @@ slack run
 
 ```
 slack env add channel_id ABCDEFGHI
+```
+
+### Test
+
+```
+deno test
 ```
 
 ### Deploy
