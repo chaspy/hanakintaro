@@ -58,7 +58,7 @@ export default SlackFunction(ResponseFunctionDefinition, ({ inputs }) => {
   // 2. Response recommended bar with keyword '今日xxで花金？’
   // 3. Return usage with invalid keyword
   let response = ''
-  const askedPlace = isAskingRecommenededPlace(keyword)
+  const askedPlace = getAskingPlace(keyword)
 
   if (isAskingHanakin(keyword)) {
     // pattern1
@@ -156,7 +156,7 @@ function isRecommendedPlace(place: string): boolean {
  * @param {string}  q - Question to the bot. 2nd part of '@hanakin "今日目黒で花金？"'
  * @returns {string} Matched regexp
  */
-function isAskingRecommenededPlace(q: string): string {
+function getAskingPlace(q: string): string {
   const regexp = /^今日[は]*(.+)で花金[？|?]$/
   const result = q.match(regexp)
   const matched = result && result[1]
