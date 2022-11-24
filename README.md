@@ -2,7 +2,7 @@
 
 [![test](https://github.com/chaspy/slack-hanakin-bot/actions/workflows/test.yaml/badge.svg)](https://github.com/chaspy/slack-hanakin-bot/actions/workflows/test.yaml)
 
-![hanakin.png](assets/hanakin.png)
+![hanakintaro.png](assets/hanakintaro.png)
 
 Illustrated by [@shimiwaka](https://github.com/shimiwaka)
 
