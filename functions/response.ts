@@ -37,17 +37,9 @@ export const ResponseFunctionDefinition = DefineFunction({
 export default SlackFunction(ResponseFunctionDefinition, ({ inputs }) => {
   const { message } = inputs
 
-  const regex = /^(<@.*>) (.*)$/
-  const found = message.match(regex)
-  const matched = found && found[2]
-  const msg = matched ?? ''
-
-  const res = msg.split(' ', 2)
-  const keyword = res[0]
-
-  // Logic for Timezone
-  // Given TZ by user, use it. Otherwise use default.
-  const tz = res[1] ? res[1] : `${env.timezone}`
+  const parsedMsg = parseInputs(message)
+  const keyword = parsedMsg[0]
+  const tz = checkTimezone(parsedMsg[1])
 
   let dt = datetime()
   try {
@@ -64,74 +56,107 @@ export default SlackFunction(ResponseFunctionDefinition, ({ inputs }) => {
   // Logic for keyword.
   // 1. Response if today is hanakin or not with keyword '今日花金？'
   // 2. Response recommended bar with keyword '今日xxで花金？’
-  const askedPlace = isAskingRecommenededPlace(keyword)
-  const collectPlace = isRecommendedPlace(keyword)
+  // 3. Return usage with invalid keyword
+  let response = ''
+  const askedPlace = getAskingPlace(keyword)
 
-  if (collectPlace) {
-    const response = getRecommendedBar(collectPlace)
-    return { outputs: { response } }
-  } else if (askedPlace) {
-    const response =
-      askedPlace +
-      'は登録されていないみたいよ。https://github.com/chaspy/hanakintaro/blob/main/env.ts におすすめの店を追加しよう'
-    return { outputs: { response } }
-  } else {
+  if (isAskingHanakin(keyword)) {
+    // pattern1
     const dayOfWeekStr = getDayOfWeekStr(dt)
-    const response = getResponse(dayOfWeekStr, keyword)
-    return { outputs: { response } }
+    response = getHanakinResponse(dayOfWeekStr)
+  } else if (askedPlace) {
+    // pattern2
+    response = getRecommendedBar(askedPlace)
+  } else {
+    // pattern3
+    const noMatchMsg = `${env.usage}`
+    response = noMatchMsg
   }
+
+  return { outputs: { response } }
 })
 
-function getRecommendedBar(place: string): string {
-  const info = env.recommended_bar[place]
-  const length = info.length
-  const num = Math.floor(Math.random() * length)
-  const bar = info[num]
+/**
+ * @param {string}  msg - first arg of message
+ * @returns {boolean} if user is asking whether today is hanakin or not
+ */
+function isAskingHanakin(msg: string): boolean {
+  const keyword = env.keyword
 
-  return '今日は花金！' + bar.name + 'で' + bar.main + 'を飲もう！' + bar.url
+  return keyword.includes(msg)
 }
 
 /**
- * @param {string}  dayOfWeek - day of week String. e.g. 'Mon', 'Tue'.
- * @param {string}  keyword - keyword by the user. 2nd part of '@hanakin "今日花金？"'
- * @returns {string} response by the bot.
+ * @param {string}  tz - timezone string given by message.
+ * @returns {string} return timezone if given. otherwise, return default
  */
-function getResponse(dayOfWeek: string, res: string): string {
-  const noMatchMsg = `${env.usage}`
-  const keyword = env.keyword
-  const dayOfWeekStr = dayOfWeek
+function checkTimezone(tz: string): string {
+  const ret = tz ? tz : `${env.timezone}`
+  return ret
+}
 
+/**
+ * @param {string}  input - input text from users
+ * @returns {string[]} return array of splited input text. the array length is 2.
+ */
+function parseInputs(input: string): string[] {
+  const regex = /^(<@.*>) (.*)$/
+  const found = input.match(regex)
+  const matched = found && found[2]
+  const msg = matched ?? ''
+
+  const res = msg.split(' ', 2)
+  return [res[0], res[1]]
+}
+
+/**
+ * @param {string}  place - place name
+ * @returns {string} response from the bot for recommendation bar in the place
+ */
+function getRecommendedBar(place: string): string {
   let response = ''
-  if (keyword.includes(res)) {
-    response = `${env.message[dayOfWeekStr]}`
+
+  if (isRecommendedPlace(place)) {
+    const info = env.recommended_bar[place]
+    const length = info.length
+    const num = Math.floor(Math.random() * length)
+    const bar = info[num]
+
+    response =
+      '今日は花金！' + bar.name + 'で' + bar.main + 'を飲もう！' + bar.url
   } else {
-    response = noMatchMsg
+    response =
+      place +
+      'は登録されていないみたいよ。https://github.com/chaspy/hanakintaro/blob/main/env.ts におすすめの店を追加しよう'
   }
+
   return response
 }
 
 /**
- * @param {string}  q - Question to the bot. 2nd part of '@hanakin "今日目黒で花金？"'
- * @returns {string} Place name of param. If it matches regexp, return the name. Otherwise, return ''
+ * @param {string}  dayOfWeek - day of week String. e.g. 'Mon', 'Tue'.
+ * @returns {string} response by the bot.
  */
-function isRecommendedPlace(q: string): string {
-  const regexp = /^今日[は]*(.+)で花金[？|?]$/
-  const result = q.match(regexp)
-  const matched = result && result[1]
-  const msg = matched ?? ''
-  const place = msg
-  if (Object.keys(env.recommended_bar).includes(place)) {
-    return place
-  } else {
-    return ''
-  }
+function getHanakinResponse(dayOfWeek: string): string {
+  const dayOfWeekStr = dayOfWeek
+  const response = `${env.message[dayOfWeekStr]}`
+
+  return response
+}
+
+/**
+ * @param {string}  place - place name for recommendation
+ * @returns {boolean} return if the given place name is defined at env.ts or not
+ */
+function isRecommendedPlace(place: string): boolean {
+  return Object.keys(env.recommended_bar).includes(place)
 }
 
 /**
  * @param {string}  q - Question to the bot. 2nd part of '@hanakin "今日目黒で花金？"'
  * @returns {string} Matched regexp
  */
-function isAskingRecommenededPlace(q: string): string {
+function getAskingPlace(q: string): string {
   const regexp = /^今日[は]*(.+)で花金[？|?]$/
   const result = q.match(regexp)
   const matched = result && result[1]
