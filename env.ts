@@ -26,6 +26,9 @@ interface hanakinBar {
 }
 
 const hanakinBar: hanakinBars = {
+  家: [
+    { name: '家', main: '好きなお酒', url: '' },
+  ],
   目黒: [
     { name: 'another8', main: 'ビール', url: 'https://sakahachi.jp/another8/' },
     {
