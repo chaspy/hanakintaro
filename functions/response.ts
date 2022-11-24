@@ -56,29 +56,44 @@ export default SlackFunction(ResponseFunctionDefinition, ({ inputs }) => {
   // Logic for keyword.
   // 1. Response if today is hanakin or not with keyword '今日花金？'
   // 2. Response recommended bar with keyword '今日xxで花金？’
+  let response = ''
   const askedPlace = isAskingRecommenededPlace(keyword)
   const collectPlace = isRecommendedPlace(keyword)
 
-  if (collectPlace) {
-    const response = getRecommendedBar(collectPlace)
-    return { outputs: { response } }
-  } else if (askedPlace) {
-    const response =
-      askedPlace +
-      'は登録されていないみたいよ。https://github.com/chaspy/hanakintaro/blob/main/env.ts におすすめの店を追加しよう'
-    return { outputs: { response } }
-  } else {
+  if (isAskingHanakin(keyword)) {
     const dayOfWeekStr = getDayOfWeekStr(dt)
-    const response = getResponse(dayOfWeekStr, keyword)
-    return { outputs: { response } }
+    response = getHanakinResponse(dayOfWeekStr)
+  } else if (askedPlace) {
+    if (collectPlace) {
+      response = getRecommendedBar(collectPlace)
+    } else {
+      response =
+        askedPlace +
+        'は登録されていないみたいよ。https://github.com/chaspy/hanakintaro/blob/main/env.ts におすすめの店を追加しよう'
+    }
+  } else {
+    const noMatchMsg = `${env.usage}`
+    response = noMatchMsg
   }
+
+  return { outputs: { response } }
 })
+
+/**
+ * @param {string}  msg - first arg of message
+ * @returns {boolean} if user is asking whether today is hanakin or not
+ */
+function isAskingHanakin(msg: string): boolean {
+  const keyword = env.keyword
+
+  return keyword.includes(msg)
+}
 
 /**
  * @param {string}  tz - timezone string given by message.
  * @returns {string} return timezone if given. otherwise, return default
  */
-function checkTimezone(tz: string): string{
+function checkTimezone(tz: string): string {
   const ret = tz ? tz : `${env.timezone}`
   return ret
 }
@@ -87,14 +102,14 @@ function checkTimezone(tz: string): string{
  * @param {string}  input - input text from users
  * @returns {string[]} return array of splited input text. the array length is 2.
  */
-function parseInputs(input: string):string[]{
+function parseInputs(input: string): string[] {
   const regex = /^(<@.*>) (.*)$/
   const found = input.match(regex)
   const matched = found && found[2]
   const msg = matched ?? ''
 
   const res = msg.split(' ', 2)
-  return [res[0],res[1]]
+  return [res[0], res[1]]
 }
 
 /**
@@ -112,20 +127,12 @@ function getRecommendedBar(place: string): string {
 
 /**
  * @param {string}  dayOfWeek - day of week String. e.g. 'Mon', 'Tue'.
- * @param {string}  keyword - keyword by the user. 2nd part of '@hanakin "今日花金？"'
  * @returns {string} response by the bot.
  */
-function getResponse(dayOfWeek: string, res: string): string {
-  const noMatchMsg = `${env.usage}`
-  const keyword = env.keyword
+function getHanakinResponse(dayOfWeek: string): string {
   const dayOfWeekStr = dayOfWeek
+  const response = `${env.message[dayOfWeekStr]}`
 
-  let response = ''
-  if (keyword.includes(res)) {
-    response = `${env.message[dayOfWeekStr]}`
-  } else {
-    response = noMatchMsg
-  }
   return response
 }
 
