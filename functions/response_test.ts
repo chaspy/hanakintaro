@@ -106,6 +106,6 @@ Deno.test('Response function test -- keyword with wrong place', async () => {
   const { outputs } = await ResponseFunction(createContext({ inputs }))
   assertEquals(
     outputs?.response,
-    '福岡は登録されていないみたいよ。https://github.com/chaspy/slack-hanakin-bot/blob/main/env.ts.sample におすすめの店を追加しよう'
+    '福岡は登録されていないみたいよ。https://github.com/chaspy/hanakintaro/blob/main/env.ts.sample におすすめの店を追加しよう'
   )
 })
