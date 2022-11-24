@@ -40,6 +40,12 @@ cp env.ts.sample env.ts
 slack run
 ```
 
+### Setup environment variable
+
+```
+slack env add channel_id ABCDEFGHI
+```
+
 ### Deploy
 
 ```
