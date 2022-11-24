@@ -74,11 +74,19 @@ export default SlackFunction(ResponseFunctionDefinition, ({ inputs }) => {
   }
 })
 
+/**
+ * @param {string}  tz - timezone string given by message.
+ * @returns {string} return timezone if given. otherwise, return default
+ */
 function checkTimezone(tz: string): string{
   const ret = tz ? tz : `${env.timezone}`
   return ret
 }
 
+/**
+ * @param {string}  input - input text from users
+ * @returns {string[]} return array of splited input text. the array length is 2.
+ */
 function parseInputs(input: string):string[]{
   const regex = /^(<@.*>) (.*)$/
   const found = input.match(regex)
@@ -89,6 +97,10 @@ function parseInputs(input: string):string[]{
   return [res[0],res[1]]
 }
 
+/**
+ * @param {string}  place - place name
+ * @returns {string} response from the bot for recommendation bar in the place
+ */
 function getRecommendedBar(place: string): string {
   const info = env.recommended_bar[place]
   const length = info.length
