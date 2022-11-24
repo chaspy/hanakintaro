@@ -2,6 +2,10 @@
 
 [![test](https://github.com/chaspy/slack-hanakin-bot/actions/workflows/test.yaml/badge.svg)](https://github.com/chaspy/slack-hanakin-bot/actions/workflows/test.yaml)
 
+![hanakin.png](image/hanakin.png)
+
+Illustrated by [@shimiwaka](https://github.com/shimiwaka)
+
 ## Feature
 
 Depending on the day of the week, the bot will reply whether today is Hanakin ([花金](https://kotobank.jp/word/%E8%8A%B1%E9%87%91-603416)).
