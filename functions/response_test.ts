@@ -8,7 +8,7 @@ const { createContext } = SlackFunctionTester('response')
 // when: hanakin keyword
 // expect: return usage
 Deno.test('Response function test -- keyword', async () => {
-  const inputs = { message: `<ABCDEFGHIJK> ${env.answer}` }
+  const inputs = { message: `<ABCDEFGHIJK> 今日花金？` }
   const { outputs } = await ResponseFunction(createContext({ inputs }))
   assertEquals(outputs?.response, env.usage)
 })
@@ -16,7 +16,18 @@ Deno.test('Response function test -- keyword', async () => {
 // when: @hanakin keyword
 // expect: return answer
 Deno.test('Response function test -- keyword', async () => {
-  const inputs = { message: `<@ABCDEFGHIJK> ${env.answer}` }
+  const inputs = { message: `<@ABCDEFGHIJK> 今日花金？` }
+  const { outputs } = await ResponseFunction(createContext({ inputs }))
+  assertEquals(
+    Object.values(env.message).includes(`${outputs?.response}`),
+    true
+  )
+})
+
+// when: @hanakin keyword (half-width ?)
+// expect: return answer
+Deno.test('Response function test -- keyword (half-width ?)', async () => {
+  const inputs = { message: `<@ABCDEFGHIJK> 今日花金?` }
   const { outputs } = await ResponseFunction(createContext({ inputs }))
   assertEquals(
     Object.values(env.message).includes(`${outputs?.response}`),
@@ -29,7 +40,7 @@ Deno.test('Response function test -- keyword', async () => {
 Deno.test(
   'Response function test -- keyword with valid timezone (short name)',
   async () => {
-    const inputs = { message: `<@ABCDEFGHIJK> ${env.answer} JST` }
+    const inputs = { message: `<@ABCDEFGHIJK> 今日花金？ JST` }
     const { outputs } = await ResponseFunction(createContext({ inputs }))
     assertEquals(
       Object.values(env.message).includes(`${outputs?.response}`),
@@ -43,7 +54,7 @@ Deno.test(
 Deno.test(
   'Response function test -- keyword with valid timezone (long name)',
   async () => {
-    const inputs = { message: `<@ABCDEFGHIJK> ${env.answer} Canada/Pacific` }
+    const inputs = { message: `<@ABCDEFGHIJK> 今日花金？ Canada/Pacific` }
     const { outputs } = await ResponseFunction(createContext({ inputs }))
     assertEquals(
       Object.values(env.message).includes(`${outputs?.response}`),
@@ -56,7 +67,7 @@ Deno.test(
 Deno.test(
   'Response function test -- keyword with invalid timezone',
   async () => {
-    const inputs = { message: `<@ABCDEFGHIJK> ${env.answer} ABC` }
+    const inputs = { message: `<@ABCDEFGHIJK> 今日花金？ ABC` }
     const { outputs } = await ResponseFunction(createContext({ inputs }))
     assertEquals(`${outputs?.response}`, 'ABC is invalid timezone')
   }

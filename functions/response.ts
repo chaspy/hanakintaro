@@ -72,11 +72,11 @@ export default SlackFunction(ResponseFunctionDefinition, ({ inputs }) => {
  */
 function getResponse(dayOfWeek: string, res: string): string {
   const noMatchMsg = `${env.usage}`
-  const answer = `${env.answer}`
+  const keyword = env.keyword
   const dayOfWeekStr = dayOfWeek
 
   let response = ''
-  if (res === answer) {
+  if (keyword.includes(res)) {
     response = `${env.message[dayOfWeekStr]}`
   } else {
     response = noMatchMsg
