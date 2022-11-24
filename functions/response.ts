@@ -73,7 +73,7 @@ export default SlackFunction(ResponseFunctionDefinition, ({ inputs }) => {
   } else if (askedPlace) {
     const response =
       askedPlace +
-      'は登録されていないみたいよ。https://github.com/chaspy/slack-hanakin-bot/blob/main/env.ts.sample におすすめの店を追加しよう'
+      'は登録されていないみたいよ。https://github.com/chaspy/hanakintaro/blob/main/env.ts.sample におすすめの店を追加しよう'
     return { outputs: { response } }
   } else {
     const dayOfWeekStr = getDayOfWeekStr(dt)

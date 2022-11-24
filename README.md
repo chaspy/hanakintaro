@@ -1,6 +1,6 @@
-# slack-hanakin-bot
+# hanakintaro (slack-hanakin-bot)
 
-[![test](https://github.com/chaspy/slack-hanakin-bot/actions/workflows/test.yaml/badge.svg)](https://github.com/chaspy/slack-hanakin-bot/actions/workflows/test.yaml)
+[![test](https://github.com/chaspy/hanakintaro/actions/workflows/test.yaml/badge.svg)](https://github.com/chaspy/hanakintaro/actions/workflows/test.yaml)
 
 ![hanakintaro.png](assets/hanakintaro.png)
 
@@ -22,7 +22,7 @@ The default value can be set by `env.timezone` .
 
 ### Suggest Recommended Place
 
-The bot will reply a recommended place for drinking. The data source is [env.ts.sample](https://github.com/chaspy/slack-hanakin-bot/env.ts.sample)
+The bot will reply a recommended place for drinking. The data source is [env.ts.sample](https://github.com/chaspy/hanakintaro/env.ts.sample)
 
 ![recommend.png](assets/recommend.png)
 
