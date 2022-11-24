@@ -56,22 +56,19 @@ export default SlackFunction(ResponseFunctionDefinition, ({ inputs }) => {
   // Logic for keyword.
   // 1. Response if today is hanakin or not with keyword '今日花金？'
   // 2. Response recommended bar with keyword '今日xxで花金？’
+  // 3. Return usage with invalid keyword
   let response = ''
   const askedPlace = isAskingRecommenededPlace(keyword)
-  const collectPlace = isRecommendedPlace(keyword)
 
   if (isAskingHanakin(keyword)) {
+    // pattern1
     const dayOfWeekStr = getDayOfWeekStr(dt)
     response = getHanakinResponse(dayOfWeekStr)
   } else if (askedPlace) {
-    if (collectPlace) {
-      response = getRecommendedBar(collectPlace)
-    } else {
-      response =
-        askedPlace +
-        'は登録されていないみたいよ。https://github.com/chaspy/hanakintaro/blob/main/env.ts におすすめの店を追加しよう'
-    }
+    // pattern2
+    response = getRecommendedBar(askedPlace)
   } else {
+    // pattern3
     const noMatchMsg = `${env.usage}`
     response = noMatchMsg
   }
@@ -117,12 +114,23 @@ function parseInputs(input: string): string[] {
  * @returns {string} response from the bot for recommendation bar in the place
  */
 function getRecommendedBar(place: string): string {
-  const info = env.recommended_bar[place]
-  const length = info.length
-  const num = Math.floor(Math.random() * length)
-  const bar = info[num]
+  let response = ''
 
-  return '今日は花金！' + bar.name + 'で' + bar.main + 'を飲もう！' + bar.url
+  if (isRecommendedPlace(place)) {
+    const info = env.recommended_bar[place]
+    const length = info.length
+    const num = Math.floor(Math.random() * length)
+    const bar = info[num]
+
+    response =
+      '今日は花金！' + bar.name + 'で' + bar.main + 'を飲もう！' + bar.url
+  } else {
+    response =
+      place +
+      'は登録されていないみたいよ。https://github.com/chaspy/hanakintaro/blob/main/env.ts におすすめの店を追加しよう'
+  }
+
+  return response
 }
 
 /**
@@ -137,20 +145,11 @@ function getHanakinResponse(dayOfWeek: string): string {
 }
 
 /**
- * @param {string}  q - Question to the bot. 2nd part of '@hanakin "今日目黒で花金？"'
- * @returns {string} Place name of param. If it matches regexp, return the name. Otherwise, return ''
+ * @param {string}  place - place name for recommendation
+ * @returns {boolean} return if the given place name is defined at env.ts or not
  */
-function isRecommendedPlace(q: string): string {
-  const regexp = /^今日[は]*(.+)で花金[？|?]$/
-  const result = q.match(regexp)
-  const matched = result && result[1]
-  const msg = matched ?? ''
-  const place = msg
-  if (Object.keys(env.recommended_bar).includes(place)) {
-    return place
-  } else {
-    return ''
-  }
+function isRecommendedPlace(place: string): boolean {
+  return Object.keys(env.recommended_bar).includes(place)
 }
 
 /**
