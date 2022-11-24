@@ -22,7 +22,7 @@ The default value can be set by `env.timezone` .
 
 ### Suggest Recommended Place
 
-The bot will reply a recommended place for drinking. The data source is [env.ts](https://github.com/chaspy/hanakintaro/env.ts)
+The bot will reply a recommended place for drinking. The data source is [env.ts](https://github.com/chaspy/hanakintaro/blob/main/env.ts)
 
 ![recommend.png](assets/recommend.png)
 
