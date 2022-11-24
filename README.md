@@ -2,17 +2,21 @@
 
 [![test](https://github.com/chaspy/slack-hanakin-bot/actions/workflows/test.yaml/badge.svg)](https://github.com/chaspy/slack-hanakin-bot/actions/workflows/test.yaml)
 
+![hanakintaro.png](assets/hanakintaro.png)
+
+Illustrated by [@shimiwaka](https://github.com/shimiwaka)
+
 ## Feature
 
 Depending on the day of the week, the bot will reply whether today is Hanakin ([花金](https://kotobank.jp/word/%E8%8A%B1%E9%87%91-603416)).
 
-![hanakin.png](image/hanakin.png)
+![hanakin.png](assets/hanakin.png)
 
 ### Support Timezone
 
 The bot can reply whether or not it is Hanakin in the specified timezone. The timezone is specified in the second argument. 
 
-![timezone.png](image/timezone.png)
+![timezone.png](assets/timezone.png)
 
 The default value can be set by `env.timezone` .
 

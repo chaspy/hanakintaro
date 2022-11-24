@@ -9,7 +9,7 @@ import Workflow from './workflows/workflow.ts'
 export default Manifest({
   name: 'hanakin',
   description: 'Send comment if today is Hanakin or not',
-  icon: 'assets/icon.png',
+  icon: 'assets/hanakintaro-face.png',
   workflows: [Workflow],
   outgoingDomains: [],
   botScopes: ['chat:write', 'chat:write.public', 'app_mentions:read'],
