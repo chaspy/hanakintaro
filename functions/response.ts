@@ -1,5 +1,5 @@
 import { DefineFunction, Schema, SlackFunction } from 'deno-slack-sdk/mod.ts'
-import { methodsWithCustomTypes } from 'https://deno.land/x/deno_slack_api@1.4.0/typed-method-types/mod.ts'
+import { methodsWithCustomTypes } from 'deno-slack-api/typed-method-types/mod.ts'
 import { DateTime, datetime } from 'ptera/mod.ts'
 import env from '../env.ts'
 
