@@ -44,6 +44,12 @@ slack run
 slack env add channel_id ABCDEFGHI
 ```
 
+### Test
+
+```
+deno test
+```
+
 ### Deploy
 
 ```
