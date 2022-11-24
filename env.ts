@@ -26,9 +26,7 @@ interface hanakinBar {
 }
 
 const hanakinBar: hanakinBars = {
-  家: [
-    { name: '家', main: '好きなお酒', url: '' },
-  ],
+  家: [{ name: '家', main: '好きなお酒', url: '' }],
   目黒: [
     { name: 'another8', main: 'ビール', url: 'https://sakahachi.jp/another8/' },
     {
@@ -46,7 +44,7 @@ const hanakinBar: hanakinBars = {
 
 export default {
   message: hanakinResponse,
-  keyword: ['今日花金？', '今日花金?'],
+  keyword: ['今日花金？', '今日花金?', '今日は花金？', '今日は花金?'],
   timezone: 'Asia/Tokyo',
   usage:
     'メンションして `今日花金？` って聞いてね。 `今日花金？ Canada/Pacific` `今日花金？ EST` のように timezone 指定もできるよ',

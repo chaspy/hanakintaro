@@ -115,7 +115,7 @@ function getResponse(dayOfWeek: string, res: string): string {
  * @returns {string} Place name of param. If it matches regexp, return the name. Otherwise, return ''
  */
 function isRecommendedPlace(q: string): string {
-  const regexp = /^今日(.+)で花金[？|?]$/
+  const regexp = /^今日[は]*(.+)で花金[？|?]$/
   const result = q.match(regexp)
   const matched = result && result[1]
   const msg = matched ?? ''
@@ -132,7 +132,7 @@ function isRecommendedPlace(q: string): string {
  * @returns {string} Matched regexp
  */
 function isAskingRecommenededPlace(q: string): string {
-  const regexp = /^今日(.+)で花金[？|?]$/
+  const regexp = /^今日[は]*(.+)で花金[？|?]$/
   const result = q.match(regexp)
   const matched = result && result[1]
   const msg = matched ?? ''
