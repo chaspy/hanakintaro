@@ -24,6 +24,17 @@ Deno.test('Response function test -- keyword', async () => {
   )
 })
 
+// when: @hanakin keyword (half-width ?)
+// expect: return answer
+Deno.test('Response function test -- keyword (half-width ?)', async () => {
+  const inputs = { message: `<@ABCDEFGHIJK> 今日花金?` }
+  const { outputs } = await ResponseFunction(createContext({ inputs }))
+  assertEquals(
+    Object.values(env.message).includes(`${outputs?.response}`),
+    true
+  )
+})
+
 // when: @hanakin keyword timezone
 // expect: return answer
 Deno.test(
