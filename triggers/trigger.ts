@@ -1,6 +1,5 @@
 import { Trigger } from "deno-slack-api/types.ts";
 import Workflow from "../workflows/workflow.ts";
-import env from "../env.ts";
 
 /**
  * Triggers determine when Workflows are executed. A trigger
