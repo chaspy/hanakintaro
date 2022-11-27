@@ -19,6 +19,12 @@ jobs:
       - uses: denoland/setup-deno@v1
         with:
           deno-version: '1.28.1'
+      - name: Run fmt
+        run: |
+          deno fmt --check
+      - name: Run lint
+        run: |
+          deno lint
       - name: deno test
         run: |
           deno test --coverage=coverage
