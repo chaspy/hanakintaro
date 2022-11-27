@@ -13,5 +13,6 @@
       "exclude": []
     },
     "options": {}
-  }
+  },
+  "importMap": "import_map.json"
 }
