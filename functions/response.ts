@@ -1,7 +1,7 @@
-import { DefineFunction, Schema, SlackFunction } from 'deno-slack-sdk/mod.ts'
-import { methodsWithCustomTypes } from 'deno-slack-api/typed-method-types/mod.ts'
-import { DateTime, datetime } from 'ptera/mod.ts'
-import env from '../env.ts'
+import { DefineFunction, Schema, SlackFunction } from "deno-slack-sdk/mod.ts";
+import { methodsWithCustomTypes } from "deno-slack-api/typed-method-types/mod.ts";
+import { DateTime, datetime } from "ptera/mod.ts";
+import env from "../env.ts";
 
 /**
  * Functions are reusable building blocks of automation that accept
@@ -10,46 +10,46 @@ import env from '../env.ts'
  * https://api.slack.com/future/functions/custom
  */
 export const ResponseFunctionDefinition = DefineFunction({
-  callback_id: 'response_function',
-  title: 'Send a message',
-  description: 'Generate a message',
-  source_file: 'functions/response.ts',
+  callback_id: "response_function",
+  title: "Send a message",
+  description: "Generate a message",
+  source_file: "functions/response.ts",
   input_parameters: {
     properties: {
       message: {
         type: Schema.types.string,
-        description: 'Message to the bot',
+        description: "Message to the bot",
       },
     },
-    required: ['message'],
+    required: ["message"],
   },
   output_parameters: {
     properties: {
       response: {
         type: Schema.types.string,
-        description: 'Response from the bot',
+        description: "Response from the bot",
       },
     },
-    required: ['response'],
+    required: ["response"],
   },
-})
+});
 
 export default SlackFunction(ResponseFunctionDefinition, ({ inputs }) => {
-  const { message } = inputs
+  const { message } = inputs;
 
-  const parsedMsg = parseInputs(message)
-  const keyword = parsedMsg[0]
-  const tz = checkTimezone(parsedMsg[1])
+  const parsedMsg = parseInputs(message);
+  const keyword = parsedMsg[0];
+  const tz = checkTimezone(parsedMsg[1]);
 
-  let dt = datetime()
+  let dt = datetime();
   try {
-    dt = datetime().toZonedTime(tz)
+    dt = datetime().toZonedTime(tz);
   } catch (e) {
     if (e instanceof RangeError) {
-      const response = `${tz} is invalid timezone`
+      const response = `${tz} is invalid timezone`;
 
       // early return
-      return { outputs: { response } }
+      return { outputs: { response } };
     }
   }
 
@@ -57,33 +57,33 @@ export default SlackFunction(ResponseFunctionDefinition, ({ inputs }) => {
   // 1. Response if today is hanakin or not with keyword '今日花金？'
   // 2. Response recommended bar with keyword '今日xxで花金？’
   // 3. Return usage with invalid keyword
-  let response = ''
-  const askedPlace = getAskingPlace(keyword)
+  let response = "";
+  const askedPlace = getAskingPlace(keyword);
 
   if (isAskingHanakin(keyword)) {
     // pattern1
-    const dayOfWeekStr = getDayOfWeekStr(dt)
-    response = getHanakinResponse(dayOfWeekStr)
+    const dayOfWeekStr = getDayOfWeekStr(dt);
+    response = getHanakinResponse(dayOfWeekStr);
   } else if (askedPlace) {
     // pattern2
-    response = getRecommendedBar(askedPlace)
+    response = getRecommendedBar(askedPlace);
   } else {
     // pattern3
-    const noMatchMsg = `${env.usage}`
-    response = noMatchMsg
+    const noMatchMsg = `${env.usage}`;
+    response = noMatchMsg;
   }
 
-  return { outputs: { response } }
-})
+  return { outputs: { response } };
+});
 
 /**
  * @param {string}  msg - first arg of message
  * @returns {boolean} if user is asking whether today is hanakin or not
  */
 function isAskingHanakin(msg: string): boolean {
-  const keyword = env.keyword
+  const keyword = env.keyword;
 
-  return keyword.includes(msg)
+  return keyword.includes(msg);
 }
 
 /**
@@ -91,8 +91,8 @@ function isAskingHanakin(msg: string): boolean {
  * @returns {string} return timezone if given. otherwise, return default
  */
 function checkTimezone(tz: string): string {
-  const ret = tz ? tz : `${env.timezone}`
-  return ret
+  const ret = tz ? tz : `${env.timezone}`;
+  return ret;
 }
 
 /**
@@ -100,13 +100,13 @@ function checkTimezone(tz: string): string {
  * @returns {string[]} return array of splited input text. the array length is 2.
  */
 function parseInputs(input: string): string[] {
-  const regex = /^(<@.*>) (.*)$/
-  const found = input.match(regex)
-  const matched = found && found[2]
-  const msg = matched ?? ''
+  const regex = /^(<@.*>) (.*)$/;
+  const found = input.match(regex);
+  const matched = found && found[2];
+  const msg = matched ?? "";
 
-  const res = msg.split(' ', 2)
-  return [res[0], res[1]]
+  const res = msg.split(" ", 2);
+  return [res[0], res[1]];
 }
 
 /**
@@ -114,23 +114,21 @@ function parseInputs(input: string): string[] {
  * @returns {string} response from the bot for recommendation bar in the place
  */
 function getRecommendedBar(place: string): string {
-  let response = ''
+  let response = "";
 
   if (isRecommendedPlace(place)) {
-    const info = env.recommended_bar[place]
-    const length = info.length
-    const num = Math.floor(Math.random() * length)
-    const bar = info[num]
+    const info = env.recommended_bar[place];
+    const length = info.length;
+    const num = Math.floor(Math.random() * length);
+    const bar = info[num];
 
-    response =
-      '今日は花金！' + bar.name + 'で' + bar.main + 'を飲もう！' + bar.url
+    response = "今日は花金！" + bar.name + "で" + bar.main + "を飲もう！" + bar.url;
   } else {
-    response =
-      place +
-      'は登録されていないみたいよ。https://github.com/chaspy/hanakintaro/blob/main/env.ts におすすめの店を追加しよう'
+    response = place +
+      "は登録されていないみたいよ。https://github.com/chaspy/hanakintaro/blob/main/env.ts におすすめの店を追加しよう";
   }
 
-  return response
+  return response;
 }
 
 /**
@@ -138,10 +136,10 @@ function getRecommendedBar(place: string): string {
  * @returns {string} response by the bot.
  */
 function getHanakinResponse(dayOfWeek: string): string {
-  const dayOfWeekStr = dayOfWeek
-  const response = `${env.message[dayOfWeekStr]}`
+  const dayOfWeekStr = dayOfWeek;
+  const response = `${env.message[dayOfWeekStr]}`;
 
-  return response
+  return response;
 }
 
 /**
@@ -149,7 +147,7 @@ function getHanakinResponse(dayOfWeek: string): string {
  * @returns {boolean} return if the given place name is defined at env.ts or not
  */
 function isRecommendedPlace(place: string): boolean {
-  return Object.keys(env.recommended_bar).includes(place)
+  return Object.keys(env.recommended_bar).includes(place);
 }
 
 /**
@@ -157,15 +155,15 @@ function isRecommendedPlace(place: string): boolean {
  * @returns {string} Matched regexp
  */
 function getAskingPlace(q: string): string {
-  const regexp = /^今日[は]*(.+)で花金[？|?]$/
-  const result = q.match(regexp)
-  const matched = result && result[1]
-  const msg = matched ?? ''
-  const place = msg
+  const regexp = /^今日[は]*(.+)で花金[？|?]$/;
+  const result = q.match(regexp);
+  const matched = result && result[1];
+  const msg = matched ?? "";
+  const place = msg;
   if (place) {
-    return place
+    return place;
   } else {
-    return ''
+    return "";
   }
 }
 
@@ -174,10 +172,10 @@ function getAskingPlace(q: string): string {
  * @returns {string} day-Of-Week String, like '1' (Monday), '3' (Tuesday)
  */
 function getDayOfWeekStr(dt: DateTime): string {
-  const dayOfWeek = dt.weekDay()
-  const dayOfWeekStr = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][
+  const dayOfWeek = dt.weekDay();
+  const dayOfWeekStr = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][
     dayOfWeek
-  ]
+  ];
 
-  return dayOfWeekStr
+  return dayOfWeekStr;
 }
