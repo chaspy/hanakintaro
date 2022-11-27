@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {},
+  "lint": {
+    "files": {
+      "include": [],
+      "exclude": []
+    },
+    "rules": {}
+  },
+  "fmt": {
+    "files": {
+      "include": [],
+      "exclude": []
+    },
+    "options": {}
+  },
+  "importMap": "import_map.json"
+}

@@ -1,5 +1,5 @@
-import { Manifest } from 'deno-slack-sdk/mod.ts'
-import Workflow from './workflows/workflow.ts'
+import { Manifest } from "deno-slack-sdk/mod.ts";
+import Workflow from "./workflows/workflow.ts";
 
 /**
  * The app manifest contains the app's configuration. This
@@ -7,10 +7,10 @@ import Workflow from './workflows/workflow.ts'
  * https://api.slack.com/future/manifest
  */
 export default Manifest({
-  name: 'hanakintaro',
-  description: 'Send comment if today is Hanakin or not',
-  icon: 'assets/hanakintaro-face.png',
+  name: "hanakintaro",
+  description: "Send comment if today is Hanakin or not",
+  icon: "assets/hanakintaro-face.png",
   workflows: [Workflow],
   outgoingDomains: [],
-  botScopes: ['chat:write', 'chat:write.public', 'app_mentions:read'],
-})
+  botScopes: ["chat:write", "chat:write.public", "app_mentions:read"],
+});
