@@ -39,6 +39,11 @@ const hanakinBar: hanakinBars = {
       main: "ワイン",
       url: "https://retty.me/area/PRE13/ARE13/SUB704/100000738931/",
     },
+    {
+      name: "ゴス",
+      main: "ウイスキー",
+      url: "https://tabelog.com/tokyo/A1316/A131601/13220203/",
+    },
   ],
 };
 
