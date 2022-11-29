@@ -154,7 +154,7 @@ function isRecommendedPlace(place: string): boolean {
  * @returns {string} Matched regexp
  */
 function getAskingPlace(q: string): string {
-  const regexp = /^今日[は]*(.+)で花金[？|?]$/;
+  const regexp = /^今日は?(.+)で花金[？?]$/;
   const result = q.match(regexp);
   const matched = result && result[1];
   const msg = matched ?? "";
