@@ -107,6 +107,7 @@
     "https://deno.land/x/deno_slack_builder@0.1.0/types.ts": "e0f78f177266609b57fffa96c4aa020a4d3b0ea7fe5db53aaea5cadad1bc3b22",
     "https://deno.land/x/deno_slack_hooks@0.4.0/check_update.ts": "f6b25ee126b95241ab0e105eb65827c470165d514f2f725f5e73719173b0929c",
     "https://deno.land/x/deno_slack_hooks@0.4.0/deps.ts": "d0a974ef9ff7d3a62d795eda3af7cb6e3d63d639d2bc2871a5361d051b492dc0",
+    "https://deno.land/x/deno_slack_hooks@0.4.0/get_trigger.ts": "f694334be56626f0b5e4a8273904450446fc435f9eb55e57e233eacf483c3a14",
     "https://deno.land/x/deno_slack_hooks@0.4.0/libraries.ts": "e374a896867cb03bf8d07854e3a7fb4682ba6f8e2cb7bf620d034dc0a915f689",
     "https://deno.land/x/deno_slack_hooks@0.4.0/utilities.ts": "582bec87cb3498c25af47d17122be0d23da5215374be46edc2e3037d7288da0b",
     "https://deno.land/x/deno_slack_hooks@0.4.0/version.ts": "5977e0f3eae5cdbe662807358b960e221877945c3e87fd004abf34590b869ef5",
