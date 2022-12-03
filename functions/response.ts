@@ -53,7 +53,7 @@ export default SlackFunction(ResponseFunctionDefinition, ({ inputs }) => {
   }
 
   // Logic for keyword.
-  // 1. Response if today is hanakin or not with keyword '今日花金？'
+  // 1. Response if today is hanakin or not with keyword '(今日|明日)花金？'
   // 2. Response recommended bar with keyword '今日xxで花金？’
   // 3. Return usage with invalid keyword
   let response = "";
@@ -61,7 +61,8 @@ export default SlackFunction(ResponseFunctionDefinition, ({ inputs }) => {
 
   if (isAskingHanakin(keyword)) {
     // pattern1
-    const dayOfWeekStr = getDayOfWeekStr(dt);
+    const when = isAskingHanakin(keyword);
+    const dayOfWeekStr = getDayOfWeekStr(dt, when);
     response = getHanakinResponse(dayOfWeekStr);
   } else if (askedPlace) {
     // pattern2
@@ -77,12 +78,14 @@ export default SlackFunction(ResponseFunctionDefinition, ({ inputs }) => {
 
 /**
  * @param {string}  msg - first arg of message
- * @returns {boolean} if user is asking whether today is hanakin or not
+ * @returns {boolean} "今日" or "明日" if user is asking whether today is hanakin or not
  */
-function isAskingHanakin(msg: string): boolean {
-  const keyword = env.keyword;
+function isAskingHanakin(msg: string): string {
+  const regex = /^(今日|明日)は?花金[？?]$/;
+  const found = msg.match(regex);
+  const when = found ? found[1] : "";
 
-  return keyword.includes(msg);
+  return when;
 }
 
 /**
@@ -168,27 +171,32 @@ function getAskingPlace(q: string): string {
 
 /**
  * @param {DateTime}  dt - DateTime.
+ * @param {String}  when - "今日" or "明日".
  * @returns {string} day-Of-Week String, like '1' (Monday), '3' (Tuesday)
  */
-function getDayOfWeekStr(dt: DateTime): string {
+function getDayOfWeekStr(dt: DateTime, when: String): string {
+  const num = (when === "明日") ? 1 : 0;
   const dayOfWeek = dt.weekDay();
-  const dayOfWeekStrFromEnv = Deno.env.get("dayOfWeekStr");
-  let dayOfWeekStr;
-  if (dayOfWeekStrFromEnv) {
-    dayOfWeekStr = dayOfWeekStrFromEnv;
+  const dayOfWeekIntFromEnv = Number(Deno.env.get("dayOfWeekInt"));
+  let arg;
+
+  if (dayOfWeekIntFromEnv) {
+    arg = dayOfWeekIntFromEnv + num;
   } else {
-    dayOfWeekStr = [
-      "Sun",
-      "Mon",
-      "Tue",
-      "Wed",
-      "Thu",
-      "Fri",
-      "Sat",
-    ][
-      dayOfWeek
-    ];
+    arg = dayOfWeek + num;
   }
+
+  const dayOfWeekStr = [
+    "Sun",
+    "Mon",
+    "Tue",
+    "Wed",
+    "Thu",
+    "Fri",
+    "Sat",
+  ][
+    arg
+  ];
 
   return dayOfWeekStr;
 }

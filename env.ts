@@ -49,7 +49,6 @@ const hanakinBar: hanakinBars = {
 
 export default {
   message: hanakinResponse,
-  keyword: ["今日花金？", "今日花金?", "今日は花金？", "今日は花金?"],
   timezone: "Asia/Tokyo",
   usage:
     "メンションして `今日花金？` って聞いてね。 `今日花金？ Canada/Pacific` `今日花金？ EST` のように timezone 指定もできるよ",

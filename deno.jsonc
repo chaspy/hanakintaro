@@ -16,6 +16,6 @@
   },
   "importMap": "import_map.json",
   "tasks": {
-    "test": "deno test --allow-env=dayOfWeekStr"
+    "test": "deno test --allow-env=dayOfWeekInt"
   }
 }
