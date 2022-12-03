@@ -19,6 +19,10 @@ export const ResponseFunctionDefinition = DefineFunction({
         type: Schema.types.string,
         description: "Message to the bot",
       },
+      testDayOfWeek: {
+        type: Schema.types.number,
+        description: "DayOfWeek for testing",
+      },
     },
     required: ["message"],
   },
@@ -52,6 +56,10 @@ export default SlackFunction(ResponseFunctionDefinition, ({ inputs }) => {
     }
   }
 
+  // From a normal trigger, input.testDayOfWeek is never apperered.
+  // This is used when we want to specify a day of the week for testing.
+  const testDayOfWeek = inputs.testDayOfWeek ? inputs.testDayOfWeek : 0;
+
   // Logic for keyword.
   // 1. Response if today is hanakin or not with keyword '(今日|明日)花金？'
   // 2. Response recommended bar with keyword '今日xxで花金？’
@@ -62,7 +70,7 @@ export default SlackFunction(ResponseFunctionDefinition, ({ inputs }) => {
   if (isAskingHanakin(keyword)) {
     // pattern1
     const when = isAskingHanakin(keyword);
-    const dayOfWeekStr = getDayOfWeekStr(dt, when);
+    const dayOfWeekStr = getDayOfWeekStr(dt, when, testDayOfWeek);
     response = getHanakinResponse(dayOfWeekStr);
   } else if (askedPlace) {
     // pattern2
@@ -174,14 +182,18 @@ function getAskingPlace(q: string): string {
  * @param {String}  when - "今日" or "明日".
  * @returns {string} day-Of-Week String, like '1' (Monday), '3' (Tuesday)
  */
-function getDayOfWeekStr(dt: DateTime, when: String): string {
+function getDayOfWeekStr(
+  dt: DateTime,
+  when: string,
+  testDayOfWeek: number,
+): string {
   const num = (when === "明日") ? 1 : 0;
   const dayOfWeek = dt.weekDay();
-  const dayOfWeekIntFromEnv = Number(Deno.env.get("dayOfWeekInt"));
+  const dayOfWeekIntForTest = testDayOfWeek;
   let arg;
 
-  if (dayOfWeekIntFromEnv) {
-    arg = dayOfWeekIntFromEnv + num;
+  if (dayOfWeekIntForTest) {
+    arg = dayOfWeekIntForTest + num;
   } else {
     arg = dayOfWeek + num;
   }
