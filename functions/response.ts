@@ -1,6 +1,6 @@
 import { DefineFunction, Schema, SlackFunction } from "deno-slack-sdk/mod.ts";
 import { DateTime, datetime } from "ptera/mod.ts";
-import env from "../env.ts";
+import conf from "../conf.ts";
 
 /**
  * Functions are reusable building blocks of automation that accept
@@ -69,7 +69,7 @@ export default SlackFunction(ResponseFunctionDefinition, ({ inputs }) => {
     response = getRecommendedBar(askedPlace);
   } else {
     // pattern3
-    const noMatchMsg = `${env.usage}`;
+    const noMatchMsg = `${conf.usage}`;
     response = noMatchMsg;
   }
 
@@ -93,7 +93,7 @@ function isAskingHanakin(msg: string): string {
  * @returns {string} return timezone if given. otherwise, return default
  */
 function checkTimezone(tz: string): string {
-  const ret = tz ? tz : `${env.timezone}`;
+  const ret = tz ? tz : `${conf.timezone}`;
   return ret;
 }
 
@@ -119,7 +119,7 @@ function getRecommendedBar(place: string): string {
   let response = "";
 
   if (isRecommendedPlace(place)) {
-    const info = env.recommended_bar[place];
+    const info = conf.recommended_bar[place];
     const length = info.length;
     const num = Math.floor(Math.random() * length);
     const bar = info[num];
@@ -127,7 +127,7 @@ function getRecommendedBar(place: string): string {
     response = "今日は花金！" + bar.name + "で" + bar.main + "を飲もう！" + bar.url;
   } else {
     response = place +
-      "は登録されていないみたいよ。https://github.com/chaspy/hanakintaro/blob/main/env.ts におすすめの店を追加しよう";
+      "は登録されていないみたいよ。https://github.com/chaspy/hanakintaro/blob/main/conf.ts におすすめの店を追加しよう";
   }
 
   return response;
@@ -139,17 +139,17 @@ function getRecommendedBar(place: string): string {
  */
 function getHanakinResponse(dayOfWeek: string): string {
   const dayOfWeekStr = dayOfWeek;
-  const response = `${env.message[dayOfWeekStr]}`;
+  const response = `${conf.message[dayOfWeekStr]}`;
 
   return response;
 }
 
 /**
  * @param {string}  place - place name for recommendation
- * @returns {boolean} return if the given place name is defined at env.ts or not
+ * @returns {boolean} return if the given place name is defined at conf.ts or not
  */
 function isRecommendedPlace(place: string): boolean {
-  return Object.keys(env.recommended_bar).includes(place);
+  return Object.keys(conf.recommended_bar).includes(place);
 }
 
 /**
