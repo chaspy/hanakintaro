@@ -208,7 +208,7 @@ function getDayOfWeekStr(
     "Fri",
     "Sat",
   ][
-    arg
+    arg % 7
   ];
 
   return dayOfWeekStr;
