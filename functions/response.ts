@@ -58,7 +58,8 @@ export default SlackFunction(ResponseFunctionDefinition, ({ inputs }) => {
 
   // From a normal trigger, input.testDayOfWeek is never apperered.
   // This is used when we want to specify a day of the week for testing.
-  const testDayOfWeek = inputs.testDayOfWeek ? inputs.testDayOfWeek : 0;
+  // If not provided, set -1 as undefined.
+  const testDayOfWeek = inputs.testDayOfWeek ? inputs.testDayOfWeek : -1;
 
   // Logic for keyword.
   // 1. Response if today is hanakin or not with keyword '(今日|明日)花金？'
@@ -192,7 +193,7 @@ function getDayOfWeekStr(
   const dayOfWeekIntForTest = testDayOfWeek;
   let arg;
 
-  if (dayOfWeekIntForTest) {
+  if (dayOfWeekIntForTest >= 0) {
     arg = dayOfWeekIntForTest + num;
   } else {
     arg = dayOfWeek + num;
