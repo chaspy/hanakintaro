@@ -13,20 +13,24 @@ Deno.test("Response function test -- keyword", async () => {
   assertEquals(outputs?.response, env.usage);
 });
 
-// when: @hanakin keyword
-// expect: return answer
+// when: @hanakin keyword on Friday
+// expect: return answer on Friday
 Deno.test("Response function test -- keyword", async () => {
+  Deno.env.set("dayOfWeekStr", "Fri");
+
   const inputs = { message: `<@ABCDEFGHIJK> 今日花金？` };
   const { outputs } = await ResponseFunction(createContext({ inputs }));
   assertEquals(
-    Object.values(env.message).includes(`${outputs?.response}`),
-    true,
+    `${outputs?.response}`,
+    "真の花金100%である",
   );
 });
 
 // when: @hanakin keyword (half-width ?)
 // expect: return answer
 Deno.test("Response function test -- keyword (half-width ?)", async () => {
+  Deno.env.delete("dayOfWeekStr");
+
   const inputs = { message: `<@ABCDEFGHIJK> 今日花金?` };
   const { outputs } = await ResponseFunction(createContext({ inputs }));
   assertEquals(
@@ -40,6 +44,8 @@ Deno.test("Response function test -- keyword (half-width ?)", async () => {
 Deno.test(
   "Response function test -- keyword with valid timezone (short name)",
   async () => {
+    Deno.env.delete("dayOfWeekStr");
+
     const inputs = { message: `<@ABCDEFGHIJK> 今日花金？ JST` };
     const { outputs } = await ResponseFunction(createContext({ inputs }));
     assertEquals(
@@ -54,6 +60,8 @@ Deno.test(
 Deno.test(
   "Response function test -- keyword with valid timezone (long name)",
   async () => {
+    Deno.env.delete("dayOfWeekStr");
+
     const inputs = { message: `<@ABCDEFGHIJK> 今日花金？ Canada/Pacific` };
     const { outputs } = await ResponseFunction(createContext({ inputs }));
     assertEquals(
@@ -67,6 +75,8 @@ Deno.test(
 Deno.test(
   "Response function test -- keyword with invalid timezone",
   async () => {
+    Deno.env.delete("dayOfWeekStr");
+
     const inputs = { message: `<@ABCDEFGHIJK> 今日花金？ ABC` };
     const { outputs } = await ResponseFunction(createContext({ inputs }));
     assertEquals(`${outputs?.response}`, "ABC is invalid timezone");
@@ -76,6 +86,8 @@ Deno.test(
 // when: @hanakin non-keyword
 // expect: return usage
 Deno.test("Response function test -- non-keyword", async () => {
+  Deno.env.delete("dayOfWeekStr");
+
   const inputs = { message: `<@ABCDEFGHIJK> ABCDEFGH` };
   const { outputs } = await ResponseFunction(createContext({ inputs }));
   assertEquals(outputs?.response, env.usage);
@@ -84,6 +96,8 @@ Deno.test("Response function test -- non-keyword", async () => {
 // when: @hanakin 今日目黒で花金?
 // expect: return recomended-bar at 目黒
 Deno.test("Response function test -- keyword with place", async () => {
+  Deno.env.delete("dayOfWeekStr");
+
   // generate test data
   const answerArray: string[] = [];
   const array = env.recommended_bar["目黒"];
@@ -102,6 +116,8 @@ Deno.test("Response function test -- keyword with place", async () => {
 // when: @hanakin 今日福岡で花金?
 // expect: return usage
 Deno.test("Response function test -- keyword with wrong place", async () => {
+  Deno.env.delete("dayOfWeekStr");
+
   const inputs = { message: `<@ABCDEFGHIJK> 今日福岡で花金?` };
   const { outputs } = await ResponseFunction(createContext({ inputs }));
   assertEquals(

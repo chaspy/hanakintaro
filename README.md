@@ -52,7 +52,7 @@ slack env add channel_id ABCDEFGHI
 ### Test
 
 ```
-deno test
+deno task test
 ```
 
 ### Deploy

@@ -172,9 +172,23 @@ function getAskingPlace(q: string): string {
  */
 function getDayOfWeekStr(dt: DateTime): string {
   const dayOfWeek = dt.weekDay();
-  const dayOfWeekStr = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][
-    dayOfWeek
-  ];
+  const dayOfWeekStrFromEnv = Deno.env.get("dayOfWeekStr");
+  let dayOfWeekStr;
+  if (dayOfWeekStrFromEnv) {
+    dayOfWeekStr = dayOfWeekStrFromEnv;
+  } else {
+    dayOfWeekStr = [
+      "Sun",
+      "Mon",
+      "Tue",
+      "Wed",
+      "Thu",
+      "Fri",
+      "Sat",
+    ][
+      dayOfWeek
+    ];
+  }
 
   return dayOfWeekStr;
 }
