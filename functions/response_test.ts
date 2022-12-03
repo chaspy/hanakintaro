@@ -13,14 +13,14 @@ Deno.test("Response function test -- keyword", async () => {
   assertEquals(outputs?.response, env.usage);
 });
 
-// when: @hanakin keyword
-// expect: return answer
+// when: @hanakin keyword on Friday
+// expect: return answer on Friday
 Deno.test("Response function test -- keyword", async () => {
   const inputs = { message: `<@ABCDEFGHIJK> 今日花金？` };
   const { outputs } = await ResponseFunction(createContext({ inputs }));
   assertEquals(
-    Object.values(env.message).includes(`${outputs?.response}`),
-    true,
+    `${outputs?.response}`,
+    "真の花金100%である",
   );
 });
 
