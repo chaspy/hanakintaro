@@ -6,13 +6,13 @@ interface hanakinResponse {
 }
 
 const hanakinResponse: hanakinResponse = {
+  Sun: "休みなので、花金である",
   Mon: "花金である",
   Tue: "ちょっと花金である",
   Wed: "花金ではない",
   Thu: "やや花金である",
   Fri: "真の花金100%である",
   Sat: "休みなので、花金である",
-  Sun: "休みなので、花金である",
 };
 
 interface hanakinBars {
@@ -49,7 +49,6 @@ const hanakinBar: hanakinBars = {
 
 export default {
   message: hanakinResponse,
-  keyword: ["今日花金？", "今日花金?", "今日は花金？", "今日は花金?"],
   timezone: "Asia/Tokyo",
   usage:
     "メンションして `今日花金？` って聞いてね。 `今日花金？ Canada/Pacific` `今日花金？ EST` のように timezone 指定もできるよ",

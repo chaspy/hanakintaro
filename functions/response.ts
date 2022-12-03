@@ -1,6 +1,6 @@
 import { DefineFunction, Schema, SlackFunction } from "deno-slack-sdk/mod.ts";
 import { DateTime, datetime } from "ptera/mod.ts";
-import env from "../env.ts";
+import conf from "../conf.ts";
 
 /**
  * Functions are reusable building blocks of automation that accept
@@ -18,6 +18,10 @@ export const ResponseFunctionDefinition = DefineFunction({
       message: {
         type: Schema.types.string,
         description: "Message to the bot",
+      },
+      testDayOfWeek: {
+        type: Schema.types.number,
+        description: "DayOfWeek for testing",
       },
     },
     required: ["message"],
@@ -52,8 +56,13 @@ export default SlackFunction(ResponseFunctionDefinition, ({ inputs }) => {
     }
   }
 
+  // From a normal trigger, input.testDayOfWeek is never apperered.
+  // This is used when we want to specify a day of the week for testing.
+  // If not provided, set -1 as undefined.
+  const testDayOfWeek = inputs.testDayOfWeek ? inputs.testDayOfWeek : -1;
+
   // Logic for keyword.
-  // 1. Response if today is hanakin or not with keyword '今日花金？'
+  // 1. Response if today is hanakin or not with keyword '(今日|明日)花金？'
   // 2. Response recommended bar with keyword '今日xxで花金？’
   // 3. Return usage with invalid keyword
   let response = "";
@@ -61,14 +70,15 @@ export default SlackFunction(ResponseFunctionDefinition, ({ inputs }) => {
 
   if (isAskingHanakin(keyword)) {
     // pattern1
-    const dayOfWeekStr = getDayOfWeekStr(dt);
+    const when = isAskingHanakin(keyword);
+    const dayOfWeekStr = getDayOfWeekStr(dt, when, testDayOfWeek);
     response = getHanakinResponse(dayOfWeekStr);
   } else if (askedPlace) {
     // pattern2
     response = getRecommendedBar(askedPlace);
   } else {
     // pattern3
-    const noMatchMsg = `${env.usage}`;
+    const noMatchMsg = `${conf.usage}`;
     response = noMatchMsg;
   }
 
@@ -77,12 +87,14 @@ export default SlackFunction(ResponseFunctionDefinition, ({ inputs }) => {
 
 /**
  * @param {string}  msg - first arg of message
- * @returns {boolean} if user is asking whether today is hanakin or not
+ * @returns {boolean} "今日" or "明日" if user is asking whether today is hanakin or not
  */
-function isAskingHanakin(msg: string): boolean {
-  const keyword = env.keyword;
+function isAskingHanakin(msg: string): string {
+  const regex = /^(今日|明日)は?花金[？?]$/;
+  const found = msg.match(regex);
+  const when = found ? found[1] : "";
 
-  return keyword.includes(msg);
+  return when;
 }
 
 /**
@@ -90,7 +102,7 @@ function isAskingHanakin(msg: string): boolean {
  * @returns {string} return timezone if given. otherwise, return default
  */
 function checkTimezone(tz: string): string {
-  const ret = tz ? tz : `${env.timezone}`;
+  const ret = tz ? tz : `${conf.timezone}`;
   return ret;
 }
 
@@ -116,7 +128,7 @@ function getRecommendedBar(place: string): string {
   let response = "";
 
   if (isRecommendedPlace(place)) {
-    const info = env.recommended_bar[place];
+    const info = conf.recommended_bar[place];
     const length = info.length;
     const num = Math.floor(Math.random() * length);
     const bar = info[num];
@@ -124,7 +136,7 @@ function getRecommendedBar(place: string): string {
     response = "今日は花金！" + bar.name + "で" + bar.main + "を飲もう！" + bar.url;
   } else {
     response = place +
-      "は登録されていないみたいよ。https://github.com/chaspy/hanakintaro/blob/main/env.ts におすすめの店を追加しよう";
+      "は登録されていないみたいよ。https://github.com/chaspy/hanakintaro/blob/main/conf.ts におすすめの店を追加しよう";
   }
 
   return response;
@@ -136,17 +148,17 @@ function getRecommendedBar(place: string): string {
  */
 function getHanakinResponse(dayOfWeek: string): string {
   const dayOfWeekStr = dayOfWeek;
-  const response = `${env.message[dayOfWeekStr]}`;
+  const response = `${conf.message[dayOfWeekStr]}`;
 
   return response;
 }
 
 /**
  * @param {string}  place - place name for recommendation
- * @returns {boolean} return if the given place name is defined at env.ts or not
+ * @returns {boolean} return if the given place name is defined at conf.ts or not
  */
 function isRecommendedPlace(place: string): boolean {
-  return Object.keys(env.recommended_bar).includes(place);
+  return Object.keys(conf.recommended_bar).includes(place);
 }
 
 /**
@@ -168,27 +180,36 @@ function getAskingPlace(q: string): string {
 
 /**
  * @param {DateTime}  dt - DateTime.
+ * @param {String}  when - "今日" or "明日".
  * @returns {string} day-Of-Week String, like '1' (Monday), '3' (Tuesday)
  */
-function getDayOfWeekStr(dt: DateTime): string {
+function getDayOfWeekStr(
+  dt: DateTime,
+  when: string,
+  testDayOfWeek: number,
+): string {
+  const num = (when === "明日") ? 1 : 0;
   const dayOfWeek = dt.weekDay();
-  const dayOfWeekStrFromEnv = Deno.env.get("dayOfWeekStr");
-  let dayOfWeekStr;
-  if (dayOfWeekStrFromEnv) {
-    dayOfWeekStr = dayOfWeekStrFromEnv;
+  const dayOfWeekIntForTest = testDayOfWeek;
+  let arg;
+
+  if (dayOfWeekIntForTest >= 0) {
+    arg = dayOfWeekIntForTest + num;
   } else {
-    dayOfWeekStr = [
-      "Sun",
-      "Mon",
-      "Tue",
-      "Wed",
-      "Thu",
-      "Fri",
-      "Sat",
-    ][
-      dayOfWeek
-    ];
+    arg = dayOfWeek + num;
   }
+
+  const dayOfWeekStr = [
+    "Sun",
+    "Mon",
+    "Tue",
+    "Wed",
+    "Thu",
+    "Fri",
+    "Sat",
+  ][
+    arg % 7
+  ];
 
   return dayOfWeekStr;
 }
