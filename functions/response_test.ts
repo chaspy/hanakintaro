@@ -13,6 +13,18 @@ Deno.test("Response function test -- keyword", async () => {
   assertEquals(outputs?.response, conf.usage);
 });
 
+// when: @hanakin keyword
+// expect: return answer
+Deno.test("Response function test -- keyword without testDayOfWeek", async () => {
+  const inputs = { message: `<@ABCDEFGHIJK> 今日花金？` };
+  const { outputs } = await ResponseFunction(createContext({ inputs }));
+
+  assertEquals(
+    Object.values(conf.message).includes(`${outputs?.response}`),
+    true,
+  );
+});
+
 // when: @hanakin keyword on Friday
 // expect: return answer on Friday
 Deno.test("Response function test -- keyword", async () => {
