@@ -6,13 +6,13 @@ interface hanakinResponse {
 }
 
 const hanakinResponse: hanakinResponse = {
+  Sun: "休みなので、花金である",
   Mon: "花金である",
   Tue: "ちょっと花金である",
   Wed: "花金ではない",
   Thu: "やや花金である",
   Fri: "真の花金100%である",
   Sat: "休みなので、花金である",
-  Sun: "休みなので、花金である",
 };
 
 interface hanakinBars {
