@@ -129,10 +129,10 @@ function getRecommendedBar(place: string): string {
     const num = Math.floor(Math.random() * length);
     const bar = info[num];
 
-    response = "今日は花金！" + bar.name + "で" + bar.main + "を飲もう！" + bar.url;
+    response = `今日は花金！${bar.name}で${bar.main}を飲もう！${bar.url}`;
   } else {
-    response = place +
-      "は登録されていないみたいよ。https://github.com/chaspy/hanakintaro/blob/main/conf.ts におすすめの店を追加しよう";
+    response =
+      `${place}は登録されていないみたいよ。https://github.com/chaspy/hanakintaro/blob/main/conf.ts におすすめの店を追加しよう`;
   }
 
   return response;
