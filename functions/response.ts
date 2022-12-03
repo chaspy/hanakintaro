@@ -19,10 +19,6 @@ export const ResponseFunctionDefinition = DefineFunction({
         type: Schema.types.string,
         description: "Message to the bot",
       },
-      testDayOfWeek: {
-        type: Schema.types.number,
-        description: "DayOfWeek for testing",
-      },
     },
     required: ["message"],
   },
@@ -37,7 +33,7 @@ export const ResponseFunctionDefinition = DefineFunction({
   },
 });
 
-export default SlackFunction(ResponseFunctionDefinition, ({ inputs }) => {
+export default SlackFunction(ResponseFunctionDefinition, ({ inputs, env }) => {
   const { message } = inputs;
 
   const parsedMsg = parseInputs(message);
@@ -56,10 +52,10 @@ export default SlackFunction(ResponseFunctionDefinition, ({ inputs }) => {
     }
   }
 
-  // From a normal trigger, input.testDayOfWeek is never apperered.
+  // From a normal trigger, env.testDayOfWeek is never apperered.
   // This is used when we want to specify a day of the week for testing.
   // If not provided, set -1 as undefined.
-  const testDayOfWeek = inputs.testDayOfWeek ? inputs.testDayOfWeek : -1;
+  const testDayOfWeek = env.testDayOfWeek ? Number(env.testDayOfWeek) : -1;
 
   // Logic for keyword.
   // 1. Response if today is hanakin or not with keyword '(今日|明日)花金？'
