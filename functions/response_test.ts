@@ -35,6 +35,17 @@ Deno.test("Response function test -- keyword", async () => {
   );
 });
 
+// when: @hanakin keyword for Tomorrow on Saturday
+// expect: return answer on Sunday
+Deno.test("Response function test -- keyword", async () => {
+  const inputs = { message: `<@ABCDEFGHIJK> 明日花金？`, testDayOfWeek: 6 };
+  const { outputs } = await ResponseFunction(createContext({ inputs }));
+  assertEquals(
+    `${outputs?.response}`,
+    "休みなので、花金である",
+  );
+});
+
 // when: @hanakin keyword (half-width ?) on Friday
 // expect: return answer on Friday
 Deno.test("Response function test -- keyword (half-width ?)", async () => {
