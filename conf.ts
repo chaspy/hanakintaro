@@ -45,6 +45,18 @@ const hanakinBar: hanakinBars = {
       url: "https://tabelog.com/tokyo/A1316/A131601/13220203/",
     },
   ],
+  Sydney: [
+    {
+      name: "Sydney Brewery Surry Hills",
+      main: "Beer",
+      url: "https://www.sydneybrewery.com/surry-hills/",
+    },
+    {
+      name: "Keg & Brew",
+      main: "Beer",
+      url: "https://www.kegandbrew.com.au/eat-drink/",
+    },
+  ],
 };
 
 export default {
