@@ -141,6 +141,24 @@ Deno.test("Response function test -- keyword with place", async () => {
   assertEquals(answerArray.includes(`${outputs?.response}`), true);
 });
 
+// when: @hanakin 今日目黒でノンアル花金?
+// expect: return recomended-food at 目黒
+Deno.test("Response function test -- keyword with place", async () => {
+  // generate test data
+  const answerArray: string[] = [];
+  const array = conf.recommended_bar["目黒"];
+  array.forEach((e) => {
+    answerArray.push(
+      `今日は花金！${e.name}で${e.main}を食べよう！${e.url}`,
+    );
+  });
+
+  // test
+  const inputs = { message: `<@ABCDEFGHIJK> 今日目黒でノンアル花金?` };
+  const { outputs } = await ResponseFunction(createContext({ inputs }));
+  assertEquals(answerArray.includes(`${outputs?.response}`), true);
+});
+
 // when: @hanakin 今日福岡で花金?
 // expect: return usage
 Deno.test("Response function test -- keyword with wrong place", async () => {
