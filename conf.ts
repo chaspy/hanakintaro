@@ -22,26 +22,35 @@ interface hanakinBars {
 interface hanakinBar {
   name: string;
   alcohol: string;
+  food: string;
   url: string;
 }
 
 const hanakinBar: hanakinBars = {
-  家: [{ name: "家", alcohol: "好きなお酒", url: "" }],
+  家: [{ name: "家", alcohol: "好きなお酒", food: "好きなおつまみ", url: "" }],
   目黒: [
-    { name: "another8", alcohol: "ビール", url: "https://sakahachi.jp/another8/" },
+    {
+      name: "another8",
+      alcohol: "ビール",
+      food: "大根の唐揚げ",
+      url: "https://sakahachi.jp/another8/",
+    },
     {
       name: "いと。",
       alcohol: "日本酒",
+      food: "白子ポンず",
       url: "https://tabelog.com/tokyo/A1316/A131601/13246061/",
     },
     {
       name: "なっぱ ごちそう",
       alcohol: "ワイン",
+      food: "帆立と鮮魚のカルパッチョ　（サラダ仕立て）",
       url: "https://retty.me/area/PRE13/ARE13/SUB704/100000738931/",
     },
     {
       name: "ゴス",
       alcohol: "ウイスキー",
+      food: "ナッツ",
       url: "https://tabelog.com/tokyo/A1316/A131601/13220203/",
     },
   ],
@@ -50,24 +59,28 @@ const hanakinBar: hanakinBars = {
       // 神楽坂
       name: "クラフトビアサーバーランド",
       alcohol: "ビール",
+      food: "穴子の Fish & Chips",
       url: "https://tabelog.com/tokyo/A1309/A130905/13160783/",
     },
     {
       // 神楽坂
       name: "BEER OLYN",
       alcohol: "ビール",
+      food: "水餃子",
       url: "https://www.beerolyn.com/",
     },
     {
       // 神楽坂
       name: "亀戸ホルモン",
       alcohol: "ビール",
+      food: "ホルモン",
       url: "https://tabelog.com/tokyo/A1309/A130905/13231854/",
     },
     {
       // 神保町
       name: "クラフトビアマーケット",
       alcohol: "ビール",
+      food: "クラフトビールキーマカレー",
       url: "https://www.craftbeermarket.jp/jimbocho/",
     },
   ],
@@ -76,11 +89,13 @@ const hanakinBar: hanakinBars = {
     {
       name: "Sydney Brewery Surry Hills",
       alcohol: "Beer",
+      food: "Sydney Brewery Loaded Burger",
       url: "https://www.sydneybrewery.com/surry-hills/",
     },
     {
       name: "Keg & Brew",
       alcohol: "Beer",
+      food: "NACHOS CON FRIJOLES",
       url: "https://www.kegandbrew.com.au/eat-drink/",
     },
   ],
