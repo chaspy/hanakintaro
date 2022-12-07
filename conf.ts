@@ -105,6 +105,6 @@ export default {
   message: hanakinResponse,
   timezone: "Asia/Tokyo",
   usage:
-    "メンションして `今日花金？` って聞いてね。 `今日花金？ Canada/Pacific` `今日花金？ EST` のように timezone 指定もできるよ",
+    "メンションして `今日花金？` って聞いてね。 `今日花金？ EST` のように timezone 指定もできるよ。飲む場所が決まっていれば `今日目黒で花金？` のように聞いてね。お酒が飲めない人は `今日目黒でノンアル花金？` と聞いてみよう。",
   recommended_bar: hanakinBar,
 };
