@@ -45,6 +45,33 @@ const hanakinBar: hanakinBars = {
       url: "https://tabelog.com/tokyo/A1316/A131601/13220203/",
     },
   ],
+  九段下: [
+    {
+      // 神楽坂
+      name: "クラフトビアサーバーランド",
+      main: "ビール",
+      url: "https://tabelog.com/tokyo/A1309/A130905/13160783/",
+    },
+    {
+      // 神楽坂
+      name: "BEER OLYN",
+      main: "ビール",
+      url: "https://www.beerolyn.com/",
+    },
+    {
+      // 神楽坂
+      name: "亀戸ホルモン",
+      main: "ビール",
+      url: "https://tabelog.com/tokyo/A1309/A130905/13231854/",
+    },
+    {
+      // 神保町
+      name: "クラフトビアマーケット",
+      main: "ビール",
+      url: "https://www.craftbeermarket.jp/jimbocho/",
+    },
+  ],
+
   Sydney: [
     {
       name: "Sydney Brewery Surry Hills",
