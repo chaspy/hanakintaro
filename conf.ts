@@ -21,27 +21,27 @@ interface hanakinBars {
 
 interface hanakinBar {
   name: string;
-  main: string;
+  alcohol: string;
   url: string;
 }
 
 const hanakinBar: hanakinBars = {
-  家: [{ name: "家", main: "好きなお酒", url: "" }],
+  家: [{ name: "家", alcohol: "好きなお酒", url: "" }],
   目黒: [
-    { name: "another8", main: "ビール", url: "https://sakahachi.jp/another8/" },
+    { name: "another8", alcohol: "ビール", url: "https://sakahachi.jp/another8/" },
     {
       name: "いと。",
-      main: "日本酒",
+      alcohol: "日本酒",
       url: "https://tabelog.com/tokyo/A1316/A131601/13246061/",
     },
     {
       name: "なっぱ ごちそう",
-      main: "ワイン",
+      alcohol: "ワイン",
       url: "https://retty.me/area/PRE13/ARE13/SUB704/100000738931/",
     },
     {
       name: "ゴス",
-      main: "ウイスキー",
+      alcohol: "ウイスキー",
       url: "https://tabelog.com/tokyo/A1316/A131601/13220203/",
     },
   ],
@@ -49,25 +49,25 @@ const hanakinBar: hanakinBars = {
     {
       // 神楽坂
       name: "クラフトビアサーバーランド",
-      main: "ビール",
+      alcohol: "ビール",
       url: "https://tabelog.com/tokyo/A1309/A130905/13160783/",
     },
     {
       // 神楽坂
       name: "BEER OLYN",
-      main: "ビール",
+      alcohol: "ビール",
       url: "https://www.beerolyn.com/",
     },
     {
       // 神楽坂
       name: "亀戸ホルモン",
-      main: "ビール",
+      alcohol: "ビール",
       url: "https://tabelog.com/tokyo/A1309/A130905/13231854/",
     },
     {
       // 神保町
       name: "クラフトビアマーケット",
-      main: "ビール",
+      alcohol: "ビール",
       url: "https://www.craftbeermarket.jp/jimbocho/",
     },
   ],
@@ -75,12 +75,12 @@ const hanakinBar: hanakinBars = {
   Sydney: [
     {
       name: "Sydney Brewery Surry Hills",
-      main: "Beer",
+      alcohol: "Beer",
       url: "https://www.sydneybrewery.com/surry-hills/",
     },
     {
       name: "Keg & Brew",
-      main: "Beer",
+      alcohol: "Beer",
       url: "https://www.kegandbrew.com.au/eat-drink/",
     },
   ],
