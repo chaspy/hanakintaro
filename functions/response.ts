@@ -63,6 +63,7 @@ export default SlackFunction(ResponseFunctionDefinition, ({ inputs, env }) => {
   // 3. Return usage with invalid keyword
   let response = "";
   const askedPlace = getAskingPlace(keyword);
+  const isNonAl = isNonAlcohol(keyword);
 
   if (isAskingHanakin(keyword)) {
     // pattern1
@@ -71,7 +72,7 @@ export default SlackFunction(ResponseFunctionDefinition, ({ inputs, env }) => {
     response = getHanakinResponse(dayOfWeekStr);
   } else if (askedPlace) {
     // pattern2
-    response = getRecommendedBar(askedPlace);
+    response = getRecommendedBar(askedPlace, isNonAl);
   } else {
     // pattern3
     const noMatchMsg = `${conf.usage}`;
@@ -120,7 +121,7 @@ function parseInputs(input: string): string[] {
  * @param {string}  place - place name
  * @returns {string} response from the bot for recommendation bar in the place
  */
-function getRecommendedBar(place: string): string {
+function getRecommendedBar(place: string, isNonAlcohol: boolean): string {
   let response = "";
 
   if (isRecommendedPlace(place)) {
@@ -129,7 +130,11 @@ function getRecommendedBar(place: string): string {
     const num = Math.floor(Math.random() * length);
     const bar = info[num];
 
-    response = `今日は花金！${bar.name}で${bar.alcohol}を飲もう！${bar.url}`;
+    if (isNonAlcohol) {
+      response = `今日は花金！${bar.name}で${bar.food}を食べよう！${bar.url}`;
+    } else {
+      response = `今日は花金！${bar.name}で${bar.alcohol}を飲もう！${bar.url}`;
+    }
   } else {
     response =
       `${place}は登録されていないみたいよ。https://github.com/chaspy/hanakintaro/blob/main/conf.ts におすすめの店を追加しよう`;
@@ -162,7 +167,7 @@ function isRecommendedPlace(place: string): boolean {
  * @returns {string} Matched regexp
  */
 function getAskingPlace(q: string): string {
-  const regexp = /^今日は?(.+)で花金[？?]$/;
+  const regexp = /^今日は?(.+)で(ノンアル)?花金[？?]$/;
   const result = q.match(regexp);
   const matched = result && result[1];
   const msg = matched ?? "";
@@ -171,6 +176,23 @@ function getAskingPlace(q: string): string {
     return place;
   } else {
     return "";
+  }
+}
+
+/**
+ * @param {string}  q - Question to the bot. 2nd part of '@hanakin "今日目黒で花金？"'
+ * @returns {boolean} If nonAlchol or not
+ */
+function isNonAlcohol(q: string): boolean {
+  const regexp = /^今日は?(.+)で(ノンアル)?花金[？?]$/;
+  const result = q.match(regexp);
+  const matched = result && result[2];
+  const msg = matched ?? "";
+  const NonAlchol = msg;
+  if (NonAlchol) {
+    return true;
+  } else {
+    return false;
   }
 }
 

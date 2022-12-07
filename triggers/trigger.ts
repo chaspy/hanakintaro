@@ -11,7 +11,7 @@ const Trigger: Trigger<typeof Workflow.definition> = {
   type: "event",
   event: {
     event_type: "slack#/events/app_mentioned",
-    channel_ids: [`${Deno.env.channel_id}`],
+    channel_ids: ["`${Deno.env.channel_id}`"],
   },
   name: "Send a message",
   description: "Send message to channel",
