@@ -131,7 +131,7 @@ Deno.test("Response function test -- keyword with place", async () => {
   const array = conf.recommended_bar["目黒"];
   array.forEach((e) => {
     answerArray.push(
-      `今日は花金！${e.name}で${e.main}を飲もう！${e.url}`,
+      `今日は花金！${e.name}で${e.alcohol}を飲もう！${e.url}`,
     );
   });
 
@@ -149,7 +149,7 @@ Deno.test("Response function test -- keyword with place", async () => {
   const array = conf.recommended_bar["目黒"];
   array.forEach((e) => {
     answerArray.push(
-      `今日は花金！${e.name}で${e.main}を食べよう！${e.url}`,
+      `今日は花金！${e.name}で${e.alcohol}を飲もう！${e.url}`,
     );
   });
 
