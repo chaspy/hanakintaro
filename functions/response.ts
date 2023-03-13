@@ -45,7 +45,8 @@ export default SlackFunction(ResponseFunctionDefinition, ({ inputs, env }) => {
     dt = datetime().toZonedTime(tz);
   } catch (e) {
     if (e instanceof RangeError) {
-      const response = `${tz} is invalid timezone`;
+      const response =
+        `${tz} is invalid timezone. Please refer TZ database name or timezone abbereviation. See https://en.wikipedia.org/wiki/List_of_tz_database_time_zones for details.`;
 
       // early return
       return { outputs: { response } };
@@ -99,7 +100,18 @@ function isAskingHanakin(msg: string): string {
  * @returns {string} return timezone if given. otherwise, return default
  */
 function checkTimezone(tz: string): string {
-  const ret = tz ? tz : `${conf.timezone}`;
+  let ret;
+  if (tz == "PST") {
+    ret = "America/Ensenada";
+  } else if (tz == "PDT") {
+    ret = "America/Ensenada";
+  } else if (tz == "JST") {
+    ret = "Asia/Tokyo";
+  } else if (tz) {
+    ret = tz;
+  } else {
+    ret = `${conf.timezone}`;
+  }
   return ret;
 }
 
