@@ -45,7 +45,7 @@ export default SlackFunction(ResponseFunctionDefinition, ({ inputs, env }) => {
     dt = datetime().toZonedTime(tz);
   } catch (e) {
     if (e instanceof RangeError) {
-      const response = `${tz} is invalid timezone`;
+      const response = `${tz} is invalid timezone. Please refer TZ database name or timezone abbereviation. See https://en.wikipedia.org/wiki/List_of_tz_database_time_zones for details.`;
 
       // early return
       return { outputs: { response } };

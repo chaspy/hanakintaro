@@ -111,7 +111,7 @@ Deno.test(
   async () => {
     const inputs = { message: `<@ABCDEFGHIJK> 今日花金？ ABC` };
     const { outputs } = await ResponseFunction(createContext({ inputs }));
-    assertEquals(`${outputs?.response}`, "ABC is invalid timezone");
+    assertEquals(`${outputs?.response}`, "ABC is invalid timezone. Please refer TZ database name or timezone abbereviation. See https://en.wikipedia.org/wiki/List_of_tz_database_time_zones for details.");
   },
 );
 
