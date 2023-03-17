@@ -261,7 +261,7 @@ function getDayOfWeekStr(
  */
 async function isGitHubDown(): Promise<boolean> {
   try {
-    let response = await fetch(
+    const response = await fetch(
       "https://www.githubstatus.com/api/v2/status.json",
     );
     const { status } = await response.json();
