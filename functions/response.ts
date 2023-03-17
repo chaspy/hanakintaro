@@ -259,7 +259,7 @@ function getDayOfWeekStr(
 }
 
 /**
- * @returns {boolean} If nonAlchol or not
+ * @returns {boolean} If GitHub is down or not
  */
 async function isGitHubDown(): Promise<boolean> {
   try {
