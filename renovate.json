@@ -2,16 +2,24 @@
   "extends": [
     "config:base"
   ],
-  "deno": {
-    "enabled": true
-  },
+  "regexManagers": [
+    {
+      "fileMatch": ["^import_map.json$"],
+      "matchStrings": [
+        "https://deno.land/x/([a-z_]+)/([a-z_]+)@(v?[0-9\\.]+)"
+      ],
+      "depNameTemplate": "deno.land/x/{{depName}}",
+      "lookupNameTemplate": "deno.land/x/{{lookupName}}",
+      "datasourceTemplate": "github-tags"
+    }
+  ],
   "packageRules": [
     {
-      "matchManagers": ["deno"],
+      "matchManagers": ["regex"],
       "rangeStrategy": "auto"
     },
     {
-      "matchManagers": ["deno"],
+      "matchManagers": ["regex"],
       "groupName": "deno dependencies",
       "groupSlug": "deno",
       "schedule": ["after 10pm on sunday"],
