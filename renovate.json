@@ -25,7 +25,5 @@
       "groupSlug": "deno",
       "labels": ["dependencies", "deno"]
     }
-  ],
-  "prHourlyLimit": 2,
-  "prConcurrentLimit": 5
+  ]
 }
