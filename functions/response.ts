@@ -53,6 +53,18 @@ export default SlackFunction(ResponseFunctionDefinition, ({ inputs, env }) => {
     }
   }
 
+  // If GitHub is down, we will get Hanakin on the day.
+  (async () => {
+    const hasGitHubIncident = isGitHubDown();
+    if (await hasGitHubIncident) {
+      const response =
+        `今日は花金！GitHub が落ちてるみたいだからね。https://www.githubstatus.com/ `;
+
+      // early return
+      return { outputs: { response } };
+    }
+  })();
+
   // From a normal trigger, env.testDayOfWeek is never apperered.
   // This is used when we want to specify a day of the week for testing.
   // If not provided, set -1 as undefined.
@@ -242,4 +254,25 @@ function getDayOfWeekStr(
   ];
 
   return dayOfWeekStr;
+}
+
+/**
+ * @returns {boolean} If nonAlchol or not
+ */
+async function isGitHubDown(): Promise<boolean> {
+  try {
+    let response = await fetch(
+      "https://www.githubstatus.com/api/v2/status.json",
+    );
+    const { status } = await response.json();
+
+    if (status.indicator === "none") {
+      return false;
+    } else {
+      return true;
+    }
+  } catch (error) {
+    console.error("GitHub Status API から情報を取得できませんでした。", error);
+    return false;
+  }
 }
