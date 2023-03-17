@@ -10,6 +10,7 @@
       ],
       "depNameTemplate": "deno.land/x/{{depName}}",
       "lookupNameTemplate": "deno.land/x/{{lookupName}}",
+      "currentValueTemplate": "{{currentValue}}",
       "datasourceTemplate": "github-tags"
     }
   ],
