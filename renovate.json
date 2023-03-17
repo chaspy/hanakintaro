@@ -2,16 +2,15 @@
   "extends": [
     "config:base"
   ],
+  "labels": ["r:{{depName}}", "r:{{depName}}/{{newVersion}}"],
   "regexManagers": [
     {
       "fileMatch": ["^import_map.json$"],
       "matchStrings": [
         "\"([a-zA-Z0-9_]+)\":\\s*\"https://deno.land/x/(?<depName>.*?)@(?<currentValue>.*?)\""
       ],
-      "depNameTemplate": "deno.land/x/{{depName}}",
-      "lookupNameTemplate": "deno.land/x/{{lookupName}}",
       "currentValueTemplate": "{{currentValue}}",
-      "datasourceTemplate": "github-tags"
+      "datasourceTemplate": "github-releases"
     }
   ],
   "packageRules": [
