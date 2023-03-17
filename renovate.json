@@ -14,8 +14,7 @@
         "https:\/\/deno.land\/x\/(?<depName>[^@]+)@(?<currentValue>v?[0-9.]+)"
       ],
       "currentValueTemplate": "{{currentValue}}",
-      "datasourceTemplate": "github-releases",
-      "lookupNameTemplate": "{{depName.replace('_', '-')}}"
+      "datasourceTemplate": "deno"
     }
   ]
 }
