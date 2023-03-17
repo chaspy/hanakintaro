@@ -11,7 +11,7 @@
     {
       "fileMatch": ["^import_map.json$"],
       "matchStrings": [
-        "https://deno.land/x/(?<depName>.+?)@(?<currentValue>.+?)"
+        "https://deno.land/x/(?<depName>.+)@(?<currentValue>.+)"
       ],
       "currentValueTemplate": "{{currentValue}}",
       "datasourceTemplate": "github-releases"
