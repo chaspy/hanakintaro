@@ -1,0 +1,24 @@
+{
+  "extends": [
+    "config:base"
+  ],
+  "deno": {
+    "enabled": true
+  },
+  "packageRules": [
+    {
+      "matchManagers": ["deno"],
+      "rangeStrategy": "auto"
+    },
+    {
+      "matchManagers": ["deno"],
+      "groupName": "deno dependencies",
+      "groupSlug": "deno",
+      "schedule": ["after 10pm on sunday"],
+      "labels": ["dependencies", "deno"]
+    }
+  ],
+  "prHourlyLimit": 2,
+  "prConcurrentLimit": 5
+}
+
