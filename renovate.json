@@ -14,7 +14,7 @@
         "https:\/\/deno.land\/x\/(?<depName>[^@]+)@(?<currentValue>v?[0-9.]+)"
       ],
       "currentValueTemplate": "{{currentValue}}",
-      "datasourceTemplate": "npm"
+      "datasourceTemplate": "deno"
     }
   ]
 }
