@@ -2,27 +2,19 @@
   "extends": [
     "config:base"
   ],
+  "enabledManagers": [
+    "regex",
+    "github-actions"
+  ],
   "labels": ["r:{{depName}}", "r:{{depName}}/{{newVersion}}"],
   "regexManagers": [
     {
       "fileMatch": ["^import_map.json$"],
       "matchStrings": [
-        "\"https://deno.land/x/(?<depName>[a-zA-Z0-9_]+)@(?<currentValue>v?[0-9\\.]+)\""
+        "https://deno.land/x/(?<depName>.+?)@(?<currentValue>.+?)"
       ],
       "currentValueTemplate": "{{currentValue}}",
       "datasourceTemplate": "github-releases"
-    }
-  ],
-  "packageRules": [
-    {
-      "matchManagers": ["regex"],
-      "rangeStrategy": "auto"
-    },
-    {
-      "matchManagers": ["regex"],
-      "groupName": "deno dependencies",
-      "groupSlug": "deno",
-      "labels": ["dependencies", "deno"]
     }
   ]
 }
