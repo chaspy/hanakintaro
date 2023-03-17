@@ -6,7 +6,7 @@
     {
       "fileMatch": ["^import_map.json$"],
       "matchStrings": [
-        "\"([a-zA-Z0-9_]+)\":\\s*\"https://deno.land/x/{{depName}}/([a-zA-Z0-9_]+)@(v?[0-9\\.]+)\""
+        "\"([a-zA-Z0-9_]+)\":\\s*\"https://deno.land/x/([a-zA-Z0-9_]+)@(v?[0-9\\.]+)\""
       ],
       "depNameTemplate": "deno.land/x/{{depName}}",
       "lookupNameTemplate": "deno.land/x/{{lookupName}}",
