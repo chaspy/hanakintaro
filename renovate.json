@@ -23,7 +23,6 @@
       "matchManagers": ["regex"],
       "groupName": "deno dependencies",
       "groupSlug": "deno",
-      "schedule": ["after 10pm on sunday"],
       "labels": ["dependencies", "deno"]
     }
   ],
