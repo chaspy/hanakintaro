@@ -16,6 +16,6 @@
   },
   "importMap": "import_map.json",
   "tasks": {
-    "test": "deno test"
+    "test": "deno test --allow-net=www.githubstatus.com"
   }
 }

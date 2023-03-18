@@ -2,6 +2,7 @@ import { SlackFunctionTester } from "deno-slack-sdk/mod.ts";
 import { assertEquals } from "std/testing/asserts.ts";
 import ResponseFunction from "./response.ts";
 import conf from "../conf.ts";
+import * as mf from "mock_fetch/mod.ts";
 
 const { createContext } = SlackFunctionTester("response");
 
@@ -171,4 +172,64 @@ Deno.test("Response function test -- keyword with wrong place", async () => {
     outputs?.response,
     "福岡は登録されていないみたいよ。https://github.com/chaspy/hanakintaro/blob/main/conf.ts におすすめの店を追加しよう",
   );
+});
+
+// when: @hanakin 今日花金? (GitHub is down)
+// expect: return 今日花金
+Deno.test("Response function test -- GitHub is down", async () => {
+  // Replaces globalThis.fetch with the mocked copy
+  mf.install();
+
+  // Response example from https://www.githubstatus.com/api#status
+  mf.mock("GET@/api/v2/status.json", () => {
+    return new Response(
+      JSON.stringify({
+        "page": {
+          "id": "kctbh9vrtdwd",
+          "name": "GitHub",
+          "url": "https://www.githubstatus.com",
+          "updated_at": "2023-03-17T08:01:50Z",
+        },
+        "status": {
+          "description": "Partial System Outage",
+          "indicator": "major",
+        },
+      }),
+      {
+        status: 200,
+      },
+    );
+  });
+
+  const inputs = { message: `<@ABCDEFGHIJK> 今日花金?` };
+  const { outputs } = await ResponseFunction(createContext({ inputs }));
+  assertEquals(
+    outputs?.response,
+    "今日は花金！GitHub が落ちてるみたいだからね。https://www.githubstatus.com/ ",
+  );
+
+  mf.uninstall();
+});
+
+// when: @hanakin 今日花金? (GitHub API returns error)
+// expect: return 今日花金
+Deno.test("Response function test -- GitHub API returns error", async () => {
+  // Replaces globalThis.fetch with the mocked copy
+  mf.install();
+
+  // Response example from https://www.githubstatus.com/api#status
+  mf.mock("GET@/api/v2/status.json", () => {
+    const errorMessage = "Fetch error";
+    throw new Error(errorMessage);
+  });
+
+  const inputs = { message: `<@ABCDEFGHIJK> 今日花金？` };
+  const { outputs } = await ResponseFunction(createContext({ inputs }));
+
+  assertEquals(
+    Object.values(conf.message).includes(`${outputs?.response}`),
+    true,
+  );
+
+  mf.uninstall();
 });

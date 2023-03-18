@@ -33,55 +33,69 @@ export const ResponseFunctionDefinition = DefineFunction({
   },
 });
 
-export default SlackFunction(ResponseFunctionDefinition, ({ inputs, env }) => {
-  const { message } = inputs;
+export default SlackFunction(
+  ResponseFunctionDefinition,
+  async ({ inputs, env }) => {
+    const { message } = inputs;
 
-  const parsedMsg = parseInputs(message);
-  const keyword = parsedMsg[0];
-  const tz = checkTimezone(parsedMsg[1]);
+    const parsedMsg = parseInputs(message);
+    const keyword = parsedMsg[0];
+    const tz = checkTimezone(parsedMsg[1]);
 
-  let dt = datetime();
-  try {
-    dt = datetime().toZonedTime(tz);
-  } catch (e) {
-    if (e instanceof RangeError) {
+    let dt = datetime();
+    try {
+      dt = datetime().toZonedTime(tz);
+    } catch (e) {
+      if (e instanceof RangeError) {
+        const response =
+          `${tz} is invalid timezone. Please refer TZ database name or timezone abbereviation. See https://en.wikipedia.org/wiki/List_of_tz_database_time_zones for details.`;
+
+        // early return
+        return { outputs: { response } };
+      }
+    }
+
+    // If GitHub is down, we will get Hanakin on the day.
+
+    const hasGitHubIncident = await isGitHubDown();
+    if (hasGitHubIncident) {
       const response =
-        `${tz} is invalid timezone. Please refer TZ database name or timezone abbereviation. See https://en.wikipedia.org/wiki/List_of_tz_database_time_zones for details.`;
+        `今日は花金！GitHub が落ちてるみたいだからね。https://www.githubstatus.com/ `;
 
       // early return
       return { outputs: { response } };
     }
-  }
 
-  // From a normal trigger, env.testDayOfWeek is never apperered.
-  // This is used when we want to specify a day of the week for testing.
-  // If not provided, set -1 as undefined.
-  const testDayOfWeek = env.testDayOfWeek ? Number(env.testDayOfWeek) : -1;
+    // From a normal trigger, env.testDayOfWeek is never apperered.
+    // This is used when we want to specify a day of the week for testing.
+    // If not provided, set -1 as undefined.
+    const testDayOfWeek = env.testDayOfWeek ? Number(env.testDayOfWeek) : -1;
 
-  // Logic for keyword.
-  // 1. Response if today is hanakin or not with keyword '(今日|明日)花金？'
-  // 2. Response recommended bar with keyword '今日xxで花金？’
-  // 3. Return usage with invalid keyword
-  let response = "";
-  const askedPlace = getAskingPlace(keyword);
-  const isNonAl = isNonAlcohol(keyword);
+    // Logic for keyword.
+    // 1. Response if today is hanakin or not with keyword '(今日|明日)花金？'
+    // 2. Response recommended bar with keyword '今日xxで花金？’
+    // 3. Return usage with invalid keyword
+    let response = "";
+    const askedPlace = getAskingPlace(keyword);
+    const isNonAl = isNonAlcohol(keyword);
 
-  if (isAskingHanakin(keyword)) {
-    // pattern1
-    const when = isAskingHanakin(keyword);
-    const dayOfWeekStr = getDayOfWeekStr(dt, when, testDayOfWeek);
-    response = getHanakinResponse(dayOfWeekStr);
-  } else if (askedPlace) {
-    // pattern2
-    response = getRecommendedBar(askedPlace, isNonAl);
-  } else {
-    // pattern3
-    const noMatchMsg = `${conf.usage}`;
-    response = noMatchMsg;
-  }
+    if (isAskingHanakin(keyword)) {
+      // pattern1
+      const when = isAskingHanakin(keyword);
+      const dayOfWeekStr = getDayOfWeekStr(dt, when, testDayOfWeek);
+      response = getHanakinResponse(dayOfWeekStr);
+    } else if (askedPlace) {
+      // pattern2
+      response = getRecommendedBar(askedPlace, isNonAl);
+    } else {
+      // pattern3
+      const noMatchMsg = `${conf.usage}`;
+      response = noMatchMsg;
+    }
 
-  return { outputs: { response } };
-});
+    return { outputs: { response } };
+  },
+);
 
 /**
  * @param {string}  msg - first arg of message
@@ -242,4 +256,25 @@ function getDayOfWeekStr(
   ];
 
   return dayOfWeekStr;
+}
+
+/**
+ * @returns {boolean} If GitHub is down or not
+ */
+async function isGitHubDown(): Promise<boolean> {
+  try {
+    const response = await fetch(
+      "https://www.githubstatus.com/api/v2/status.json",
+    );
+    const { status } = await response.json();
+
+    if (status.indicator === "none") {
+      return false;
+    } else {
+      return true;
+    }
+  } catch (error) {
+    console.error("GitHub Status API から情報を取得できませんでした。", error);
+    return false;
+  }
 }
