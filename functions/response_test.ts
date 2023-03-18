@@ -105,6 +105,22 @@ Deno.test(
     );
   },
 );
+
+// when: @hanakin keyword timezone on Friday
+// expect: return answer on Friday
+Deno.test(
+  "Response function test -- keyword with valid timezone (abbereviation in timezone.ts)",
+  async () => {
+    const inputs = { message: `<@ABCDEFGHIJK> 今日花金？ CEST` };
+    const env = { testDayOfWeek: "5" };
+    const { outputs } = await ResponseFunction(createContext({ inputs, env }));
+    assertEquals(
+      `${outputs?.response}`,
+      "真の花金100%である",
+    );
+  },
+);
+
 // when: @hanakin keyword invalid-timezone
 // expect: return error message
 Deno.test(
@@ -114,7 +130,7 @@ Deno.test(
     const { outputs } = await ResponseFunction(createContext({ inputs }));
     assertEquals(
       `${outputs?.response}`,
-      "ABC is invalid timezone. Please refer TZ database name or timezone abbereviation. See https://en.wikipedia.org/wiki/List_of_tz_database_time_zones for details.",
+      "ABC is invalid timezone. Please refer TZ database name. See https://en.wikipedia.org/wiki/List_of_tz_database_time_zones for details. And typical abbereviations are supported. See https://github.com/chaspy/hanakintaro/blob/main/timezone.ts",
     );
   },
 );

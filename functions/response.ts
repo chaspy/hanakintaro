@@ -1,6 +1,7 @@
 import { DefineFunction, Schema, SlackFunction } from "deno-slack-sdk/mod.ts";
 import { DateTime, datetime } from "ptera/mod.ts";
 import conf from "../conf.ts";
+import { timezoneAbbreviations } from "../timezone.ts";
 
 /**
  * Functions are reusable building blocks of automation that accept
@@ -48,7 +49,7 @@ export default SlackFunction(
     } catch (e) {
       if (e instanceof RangeError) {
         const response =
-          `${tz} is invalid timezone. Please refer TZ database name or timezone abbereviation. See https://en.wikipedia.org/wiki/List_of_tz_database_time_zones for details.`;
+          `${tz} is invalid timezone. Please refer TZ database name. See https://en.wikipedia.org/wiki/List_of_tz_database_time_zones for details. And typical abbereviations are supported. See https://github.com/chaspy/hanakintaro/blob/main/timezone.ts`;
 
         // early return
         return { outputs: { response } };
@@ -115,18 +116,22 @@ function isAskingHanakin(msg: string): string {
  */
 function checkTimezone(tz: string): string {
   let ret;
-  if (tz == "PST") {
-    ret = "America/Ensenada";
-  } else if (tz == "PDT") {
-    ret = "America/Ensenada";
-  } else if (tz == "JST") {
-    ret = "Asia/Tokyo";
+  if (isAbbreviationValid(tz)) {
+    ret = timezoneAbbreviations.tz;
   } else if (tz) {
     ret = tz;
   } else {
     ret = `${conf.timezone}`;
   }
   return ret;
+}
+
+/**
+ * @param {string}  abbreviation - timezone abbreviation string given by message.
+ * @returns {string} return if the abbreviation exists in timezone.ts
+ */
+function isAbbreviationValid(abbreviation: string): boolean {
+  return abbreviation in timezoneAbbreviations;
 }
 
 /**
