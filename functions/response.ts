@@ -1,6 +1,7 @@
 import { DefineFunction, Schema, SlackFunction } from "deno-slack-sdk/mod.ts";
 import { DateTime, datetime } from "ptera/mod.ts";
 import conf from "../conf.ts";
+import { timezoneAbbreviations } from "../timezone.ts";
 
 /**
  * Functions are reusable building blocks of automation that accept
@@ -115,18 +116,22 @@ function isAskingHanakin(msg: string): string {
  */
 function checkTimezone(tz: string): string {
   let ret;
-  if (tz == "PST") {
-    ret = "America/Ensenada";
-  } else if (tz == "PDT") {
-    ret = "America/Ensenada";
-  } else if (tz == "JST") {
-    ret = "Asia/Tokyo";
+  if (isAbbreviationValid(tz)) {
+    ret = timezoneAbbreviations.tz;
   } else if (tz) {
     ret = tz;
   } else {
     ret = `${conf.timezone}`;
   }
   return ret;
+}
+
+/**
+ * @param {string}  abbreviation - timezone abbreviation string given by message.
+ * @returns {string} return if the abbreviation exists in timezone.ts
+ */
+function isAbbreviationValid(abbreviation: string): boolean {
+  return abbreviation in timezoneAbbreviations;
 }
 
 /**
