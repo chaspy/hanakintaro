@@ -210,3 +210,26 @@ Deno.test("Response function test -- GitHub is down", async () => {
 
   mf.uninstall();
 });
+
+// when: @hanakin 今日花金? (GitHub API returns error)
+// expect: return 今日花金
+Deno.test("Response function test -- GitHub API returns error", async () => {
+  // Replaces globalThis.fetch with the mocked copy
+  mf.install();
+
+  // Response example from https://www.githubstatus.com/api#status
+  mf.mock("GET@/api/v2/status.json", () => {
+    const errorMessage = "Fetch error";
+    throw new Error(errorMessage);
+  });
+
+  const inputs = { message: `<@ABCDEFGHIJK> 今日花金？` };
+  const { outputs } = await ResponseFunction(createContext({ inputs }));
+
+  assertEquals(
+    Object.values(conf.message).includes(`${outputs?.response}`),
+    true,
+  );
+
+  mf.uninstall();
+});
