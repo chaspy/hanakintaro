@@ -11,6 +11,6 @@ export default Manifest({
   description: "Send comment if today is Hanakin or not",
   icon: "assets/hanakintaro-face.png",
   workflows: [Workflow],
-  outgoingDomains: [],
+  outgoingDomains: ["www.githubstatus.com"],
   botScopes: ["chat:write", "chat:write.public", "app_mentions:read"],
 });
