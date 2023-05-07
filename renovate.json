@@ -11,9 +11,8 @@
     {
       "fileMatch": ["^import_map.json$"],
       "matchStrings": [
-        "https:\/\/deno.land\/x\/(?<depName>[a-zA-Z0-9_-]+)@(?<currentValue>v?[0-9.]+)"
+        "\".+?\"\\s*:\\s*\"(?<depName>https://deno.land/.+?)@v?(?<currentValue>\\d+?\\.\\d+?\\.\\d+?).*?\""
       ],
-      "currentValueTemplate": "{{currentValue}}",
       "datasourceTemplate": "deno"
     }
   ]
