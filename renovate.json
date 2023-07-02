@@ -15,5 +15,18 @@
       ],
       "datasourceTemplate": "deno"
     }
+  ],
+  "packageRules": [
+    {
+      "managers": ["regex"],
+      "packagePatterns": [".*"],
+      "updateTypes": ["major"]
+    },
+    {
+      "managers": ["regex"],
+      "packagePatterns": [".*"],
+      "updateTypes": ["minor", "patch", "pin", "digest"],
+      "automerge": true
+    }
   ]
 }
