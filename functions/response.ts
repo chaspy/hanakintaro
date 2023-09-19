@@ -56,6 +56,23 @@ export default SlackFunction(
       }
     }
 
+    // Special feature.
+    // 2023-09-19 is the day of the StudySapuri for grade 1 renewal.
+    const beforeDayOfReleaseG1Renewal = new Date("2023-09-18T23:59:59+09:00")
+    const afterDayOfReleaseG1Renewal = new Date("2023-09-19T23:59:59+09:00")
+
+    const today = new Date();
+    console.log(afterDayOfReleaseG1Renewal);
+    console.log(beforeDayOfReleaseG1Renewal);
+    console.log(today);
+    if (today < afterDayOfReleaseG1Renewal && today > beforeDayOfReleaseG1Renewal){
+      const response =
+        `今日は花金！小学1年生リニューアルの日だよ！https://studysapuri.jp/course/elementary/sho1/`;
+
+      // early return
+      return { outputs: { response } };
+    }
+
     // If GitHub is down, we will get Hanakin on the day.
 
     const hasGitHubIncident = await isGitHubDown();
