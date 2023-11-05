@@ -249,3 +249,27 @@ Deno.test("Response function test -- GitHub API returns error", async () => {
 
   mf.uninstall();
 });
+
+Deno.test("Response function test -- payday", async () => {
+  const inputs = { message: `<@ABCDEFGHIJK> 今日花金？` };
+
+  const env = { testDate: "2023-11-22" };
+  const { outputs } = await ResponseFunction(createContext({ inputs, env }));
+
+  assertEquals(
+    outputs?.response,
+    "今日は給料日だから花金！やったね！",
+  );
+});
+
+Deno.test("Response function test -- bonusDay", async () => {
+  const inputs = { message: `<@ABCDEFGHIJK> 今日花金？` };
+
+  const env = { testDate: "2023-12-11" };
+  const { outputs } = await ResponseFunction(createContext({ inputs, env }));
+
+  assertEquals(
+    outputs?.response,
+    "今日は賞与支給日だから花金！やったね！",
+  );
+});
