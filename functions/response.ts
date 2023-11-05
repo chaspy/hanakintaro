@@ -56,10 +56,8 @@ export default SlackFunction(
       }
     }
 
-    // 給料日かどうかを判定する関数
-    function isPayday(date: Date): boolean {
-      // for testing
-      // if env.testDate is set, use it. unless, use current date
+    // 日付文字列を取得する関数
+    function getDateString(date: Date): string {
       let dateString = "";
       if (env.testDate) {
         dateString = env.testDate;
@@ -71,26 +69,18 @@ export default SlackFunction(
           day.toString().padStart(2, "0")
         }`;
       }
+      return dateString;
+    }
 
+    // 給料日かどうかを判定する関数
+    function isPayday(date: Date): boolean {
+      const dateString = getDateString(date);
       return conf.payday.includes(dateString);
     }
 
     // 賞与日かどうかを判定する関数
     function isBonusDay(date: Date): boolean {
-      // for testing
-      // if env.testDate is set, use it. unless, use current date
-      let dateString = "";
-      if (env.testDate) {
-        dateString = env.testDate;
-      } else {
-        const year = date.getFullYear();
-        const month = date.getMonth() + 1;
-        const day = date.getDate();
-        dateString = `${year}-${month.toString().padStart(2, "0")}-${
-          day.toString().padStart(2, "0")
-        }`;
-      }
-
+      const dateString = getDateString(date);
       return conf.bonusDay.includes(dateString);
     }
 
