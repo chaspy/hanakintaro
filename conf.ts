@@ -101,10 +101,34 @@ const hanakinBar: hanakinBars = {
   ],
 };
 
+// 給料日を設定する日付
+export const payday = [
+  "2023-11-22",
+  "2023-12-22",
+  "2024-01-22",
+  "2024-02-22",
+  "2024-03-22",
+  "2024-04-22",
+  "2024-05-22",
+  "2024-06-21",
+  "2024-07-22",
+  "2024-08-22",
+  "2024-09-20",
+  "2024-10-22",
+];
+
+export const bonusDay = [
+  "2023-12-11",
+  "2024-06-10",
+  "2024-12-10",
+];
+
 export default {
   message: hanakinResponse,
   timezone: "Asia/Tokyo",
   usage:
     "メンションして `今日花金？` って聞いてね。 `今日花金？ EST` のように timezone 指定もできるよ。飲む場所が決まっていれば `今日目黒で花金？` のように聞いてね。お酒が飲めない人は `今日目黒でノンアル花金？` と聞いてみよう。",
   recommended_bar: hanakinBar,
+  payday: payday,
+  bonusDay: bonusDay,
 };

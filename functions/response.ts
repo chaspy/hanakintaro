@@ -56,8 +56,61 @@ export default SlackFunction(
       }
     }
 
-    // If GitHub is down, we will get Hanakin on the day.
+    // 給料日かどうかを判定する関数
+    function isPayday(date: Date): boolean {
+      // for testing
+      // if env.testDate is set, use it. unless, use current date
+      let dateString = "";
+      if (env.testDate) {
+        dateString = env.testDate;
+      } else {
+        const year = date.getFullYear();
+        const month = date.getMonth() + 1;
+        const day = date.getDate();
+        dateString = `${year}-${month.toString().padStart(2, "0")}-${
+          day.toString().padStart(2, "0")
+        }`;
+      }
 
+      return conf.payday.includes(dateString);
+    }
+
+    // 賞与日かどうかを判定する関数
+    function isBonusDay(date: Date): boolean {
+      // for testing
+      // if env.testDate is set, use it. unless, use current date
+      let dateString = "";
+      if (env.testDate) {
+        dateString = env.testDate;
+      } else {
+        const year = date.getFullYear();
+        const month = date.getMonth() + 1;
+        const day = date.getDate();
+        dateString = `${year}-${month.toString().padStart(2, "0")}-${
+          day.toString().padStart(2, "0")
+        }`;
+      }
+
+      return conf.bonusDay.includes(dateString);
+    }
+
+    // 給料日かどうかをチェックする
+    const today = new Date();
+    if (isPayday(today)) {
+      const response = "今日は給料日だから花金！やったね！";
+
+      // 早期リターン
+      return { outputs: { response } };
+    }
+    // 賞与日かどうかをチェックする
+    if (isBonusDay(today)) {
+      const response = "今日は賞与支給日だから花金！やったね！";
+
+      // 早期リターン
+      return { outputs: { response } };
+    }
+
+    // If GitHub is down, we will get Hanakin on the day.
     const hasGitHubIncident = await isGitHubDown();
     if (hasGitHubIncident) {
       const response =
