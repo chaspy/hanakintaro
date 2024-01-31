@@ -30,7 +30,7 @@ jobs:
           deno task test --coverage=coverage
           deno coverage coverage --lcov --output=cov_profile.lcov
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v4
         with:
           file: ./cov_profile.lcov
           fail_ci_if_error: false
