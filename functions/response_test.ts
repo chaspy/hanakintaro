@@ -16,15 +16,18 @@ Deno.test("Response function test -- keyword", async () => {
 
 // when: @hanakin keyword
 // expect: return answer
-Deno.test("Response function test -- keyword without testDayOfWeek", async () => {
-  const inputs = { message: `<@ABCDEFGHIJK> 今日花金？` };
-  const { outputs } = await ResponseFunction(createContext({ inputs }));
+Deno.test(
+  "Response function test -- keyword without testDayOfWeek",
+  async () => {
+    const inputs = { message: `<@ABCDEFGHIJK> 今日花金？` };
+    const { outputs } = await ResponseFunction(createContext({ inputs }));
 
-  assertEquals(
-    Object.values(conf.message).includes(`${outputs?.response}`),
-    true,
-  );
-});
+    assertEquals(
+      Object.values(conf.message).includes(`${outputs?.response}`),
+      true,
+    );
+  },
+);
 
 // when: @hanakin keyword on Friday
 // expect: return answer on Friday
@@ -32,10 +35,7 @@ Deno.test("Response function test -- keyword", async () => {
   const inputs = { message: `<@ABCDEFGHIJK> 今日花金？` };
   const env = { testDayOfWeek: "5" };
   const { outputs } = await ResponseFunction(createContext({ inputs, env }));
-  assertEquals(
-    `${outputs?.response}`,
-    "真の花金100%である",
-  );
+  assertEquals(`${outputs?.response}`, "真の花金100%である");
 });
 
 // when: @hanakin keyword for Tomorrow on Thursday
@@ -44,10 +44,7 @@ Deno.test("Response function test -- keyword", async () => {
   const inputs = { message: `<@ABCDEFGHIJK> 明日花金？` };
   const env = { testDayOfWeek: "4" };
   const { outputs } = await ResponseFunction(createContext({ inputs, env }));
-  assertEquals(
-    `${outputs?.response}`,
-    "真の花金100%である",
-  );
+  assertEquals(`${outputs?.response}`, "真の花金100%である");
 });
 
 // when: @hanakin keyword for Tomorrow on Saturday
@@ -56,10 +53,7 @@ Deno.test("Response function test -- keyword", async () => {
   const inputs = { message: `<@ABCDEFGHIJK> 明日花金？` };
   const env = { testDayOfWeek: "6" };
   const { outputs } = await ResponseFunction(createContext({ inputs, env }));
-  assertEquals(
-    `${outputs?.response}`,
-    "休みなので、花金である",
-  );
+  assertEquals(`${outputs?.response}`, "休みなので、花金である");
 });
 
 // when: @hanakin keyword (half-width ?) on Friday
@@ -68,10 +62,7 @@ Deno.test("Response function test -- keyword (half-width ?)", async () => {
   const inputs = { message: `<@ABCDEFGHIJK> 今日花金?` };
   const env = { testDayOfWeek: "5" };
   const { outputs } = await ResponseFunction(createContext({ inputs, env }));
-  assertEquals(
-    `${outputs?.response}`,
-    "真の花金100%である",
-  );
+  assertEquals(`${outputs?.response}`, "真の花金100%である");
 });
 
 // when: @hanakin keyword timezone on Friday
@@ -82,10 +73,7 @@ Deno.test(
     const inputs = { message: `<@ABCDEFGHIJK> 今日花金？ JST` };
     const env = { testDayOfWeek: "5" };
     const { outputs } = await ResponseFunction(createContext({ inputs, env }));
-    assertEquals(
-      `${outputs?.response}`,
-      "真の花金100%である",
-    );
+    assertEquals(`${outputs?.response}`, "真の花金100%である");
   },
 );
 
@@ -99,10 +87,7 @@ Deno.test(
     };
     const env = { testDayOfWeek: "5" };
     const { outputs } = await ResponseFunction(createContext({ inputs, env }));
-    assertEquals(
-      `${outputs?.response}`,
-      "真の花金100%である",
-    );
+    assertEquals(`${outputs?.response}`, "真の花金100%である");
   },
 );
 
@@ -114,10 +99,7 @@ Deno.test(
     const inputs = { message: `<@ABCDEFGHIJK> 今日花金？ CEST` };
     const env = { testDayOfWeek: "5" };
     const { outputs } = await ResponseFunction(createContext({ inputs, env }));
-    assertEquals(
-      `${outputs?.response}`,
-      "真の花金100%である",
-    );
+    assertEquals(`${outputs?.response}`, "真の花金100%である");
   },
 );
 
@@ -150,9 +132,7 @@ Deno.test("Response function test -- keyword with place", async () => {
   const answerArray: string[] = [];
   const array = conf.recommended_bar["目黒"];
   array.forEach((e) => {
-    answerArray.push(
-      `今日は花金！${e.name}で${e.alcohol}を飲もう！${e.url}`,
-    );
+    answerArray.push(`今日は花金！${e.name}で${e.alcohol}を飲もう！${e.url}`);
   });
 
   // test
@@ -168,9 +148,7 @@ Deno.test("Response function test -- keyword with place", async () => {
   const answerArray: string[] = [];
   const array = conf.recommended_bar["目黒"];
   array.forEach((e) => {
-    answerArray.push(
-      `今日は花金！${e.name}で${e.food}を食べよう！${e.url}`,
-    );
+    answerArray.push(`今日は花金！${e.name}で${e.food}を食べよう！${e.url}`);
   });
 
   // test
@@ -200,15 +178,15 @@ Deno.test("Response function test -- GitHub is down", async () => {
   mf.mock("GET@/api/v2/status.json", () => {
     return new Response(
       JSON.stringify({
-        "page": {
-          "id": "kctbh9vrtdwd",
-          "name": "GitHub",
-          "url": "https://www.githubstatus.com",
-          "updated_at": "2023-03-17T08:01:50Z",
+        page: {
+          id: "kctbh9vrtdwd",
+          name: "GitHub",
+          url: "https://www.githubstatus.com",
+          updated_at: "2023-03-17T08:01:50Z",
         },
-        "status": {
-          "description": "Partial System Outage",
-          "indicator": "major",
+        status: {
+          description: "Partial System Outage",
+          indicator: "major",
         },
       }),
       {
@@ -256,10 +234,7 @@ Deno.test("Response function test -- payday", async () => {
   const env = { testDate: "2023-11-22" };
   const { outputs } = await ResponseFunction(createContext({ inputs, env }));
 
-  assertEquals(
-    outputs?.response,
-    "今日は給料日だから花金！やったね！",
-  );
+  assertEquals(outputs?.response, "今日は給料日だから花金！やったね！");
 });
 
 Deno.test("Response function test -- bonusDay", async () => {
@@ -268,8 +243,18 @@ Deno.test("Response function test -- bonusDay", async () => {
   const env = { testDate: "2023-12-11" };
   const { outputs } = await ResponseFunction(createContext({ inputs, env }));
 
+  assertEquals(outputs?.response, "今日は賞与支給日だから花金！やったね！");
+});
+
+// 閏日かどうかのテスト
+Deno.test("Response function test -- leap year", async () => {
+  const inputs = { message: `<@ABCDEFGHIJK> 今日花金？` };
+
+  const env = { testDate: "2024-02-29" };
+  const { outputs } = await ResponseFunction(createContext({ inputs, env }));
+
   assertEquals(
     outputs?.response,
-    "今日は賞与支給日だから花金！やったね！",
+    "今日は4年に1度の閏日だからハイパーウルトラクアドラプル花金！やったね！",
   );
 });
