@@ -43,13 +43,14 @@ export default SlackFunction(
     const keyword = parsedMsg[0];
     const tz = checkTimezone(parsedMsg[1]);
 
+    const today = new Date();
+
     let dt = datetime();
     try {
       dt = datetime().toZonedTime(tz);
     } catch (e) {
       if (e instanceof RangeError) {
-        const response =
-          `${tz} is invalid timezone. Please refer TZ database name. See https://en.wikipedia.org/wiki/List_of_tz_database_time_zones for details. And typical abbereviations are supported. See https://github.com/chaspy/hanakintaro/blob/main/timezone.ts`;
+        const response = `${tz} is invalid timezone. Please refer TZ database name. See https://en.wikipedia.org/wiki/List_of_tz_database_time_zones for details. And typical abbereviations are supported. See https://github.com/chaspy/hanakintaro/blob/main/timezone.ts`;
 
         // early return
         return { outputs: { response } };
@@ -65,11 +66,9 @@ export default SlackFunction(
         const year = date.getFullYear();
         const month = date.getMonth() + 1;
         const day = date.getDate();
-        dateString = `${year}-${month.toString().padStart(2, "0")}-${
-          day
-            .toString()
-            .padStart(2, "0")
-        }`;
+        dateString = `${year}-${month.toString().padStart(2, "0")}-${day
+          .toString()
+          .padStart(2, "0")}`;
       }
       return dateString;
     }
@@ -87,7 +86,7 @@ export default SlackFunction(
     }
 
     // 閏日であれば早期リターン
-    if (isLeapYear(dt.year) && isLeapDay(dt)) {
+    if (isLeapYear(today.getFullYear()) && isLeapDay(today)) {
       const response =
         "今日は4年に1度の閏日だからハイパーウルトラクアドラプル花金！やったね！";
 
@@ -108,7 +107,6 @@ export default SlackFunction(
     }
 
     // 給料日かどうかをチェックする
-    const today = new Date();
     if (isPayday(today)) {
       const response = "今日は給料日だから花金！やったね！";
 
@@ -126,8 +124,7 @@ export default SlackFunction(
     // If GitHub is down, we will get Hanakin on the day.
     const hasGitHubIncident = await isGitHubDown();
     if (hasGitHubIncident) {
-      const response =
-        `今日は花金！GitHub が落ちてるみたいだからね。https://www.githubstatus.com/ `;
+      const response = `今日は花金！GitHub が落ちてるみたいだからね。https://www.githubstatus.com/ `;
 
       // early return
       return { outputs: { response } };
@@ -161,7 +158,7 @@ export default SlackFunction(
     }
 
     return { outputs: { response } };
-  },
+  }
 );
 
 /**
@@ -233,8 +230,7 @@ function getRecommendedBar(place: string, isNonAlcohol: boolean): string {
       response = `今日は花金！${bar.name}で${bar.alcohol}を飲もう！${bar.url}`;
     }
   } else {
-    response =
-      `${place}は登録されていないみたいよ。https://github.com/chaspy/hanakintaro/blob/main/conf.ts におすすめの店を追加しよう`;
+    response = `${place}は登録されていないみたいよ。https://github.com/chaspy/hanakintaro/blob/main/conf.ts におすすめの店を追加しよう`;
   }
 
   return response;
@@ -301,7 +297,7 @@ function isNonAlcohol(q: string): boolean {
 function getDayOfWeekStr(
   dt: DateTime,
   when: string,
-  testDayOfWeek: number,
+  testDayOfWeek: number
 ): string {
   const num = when === "明日" ? 1 : 0;
   const dayOfWeek = dt.weekDay();
@@ -327,7 +323,7 @@ function getDayOfWeekStr(
 async function isGitHubDown(): Promise<boolean> {
   try {
     const response = await fetch(
-      "https://www.githubstatus.com/api/v2/status.json",
+      "https://www.githubstatus.com/api/v2/status.json"
     );
     const { status } = await response.json();
 
