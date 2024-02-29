@@ -24,9 +24,9 @@ Deno.test(
 
     assertEquals(
       Object.values(conf.message).includes(`${outputs?.response}`),
-      true
+      true,
     );
-  }
+  },
 );
 
 // when: @hanakin keyword on Friday
@@ -74,7 +74,7 @@ Deno.test(
     const env = { testDayOfWeek: "5" };
     const { outputs } = await ResponseFunction(createContext({ inputs, env }));
     assertEquals(`${outputs?.response}`, "真の花金100%である");
-  }
+  },
 );
 
 // when: @hanakin keyword timezone on Friday
@@ -88,7 +88,7 @@ Deno.test(
     const env = { testDayOfWeek: "5" };
     const { outputs } = await ResponseFunction(createContext({ inputs, env }));
     assertEquals(`${outputs?.response}`, "真の花金100%である");
-  }
+  },
 );
 
 // when: @hanakin keyword timezone on Friday
@@ -100,7 +100,7 @@ Deno.test(
     const env = { testDayOfWeek: "5" };
     const { outputs } = await ResponseFunction(createContext({ inputs, env }));
     assertEquals(`${outputs?.response}`, "真の花金100%である");
-  }
+  },
 );
 
 // when: @hanakin keyword invalid-timezone
@@ -112,9 +112,9 @@ Deno.test(
     const { outputs } = await ResponseFunction(createContext({ inputs }));
     assertEquals(
       `${outputs?.response}`,
-      "ABC is invalid timezone. Please refer TZ database name. See https://en.wikipedia.org/wiki/List_of_tz_database_time_zones for details. And typical abbereviations are supported. See https://github.com/chaspy/hanakintaro/blob/main/timezone.ts"
+      "ABC is invalid timezone. Please refer TZ database name. See https://en.wikipedia.org/wiki/List_of_tz_database_time_zones for details. And typical abbereviations are supported. See https://github.com/chaspy/hanakintaro/blob/main/timezone.ts",
     );
-  }
+  },
 );
 
 // when: @hanakin non-keyword
@@ -164,7 +164,7 @@ Deno.test("Response function test -- keyword with wrong place", async () => {
   const { outputs } = await ResponseFunction(createContext({ inputs }));
   assertEquals(
     outputs?.response,
-    "福岡は登録されていないみたいよ。https://github.com/chaspy/hanakintaro/blob/main/conf.ts におすすめの店を追加しよう"
+    "福岡は登録されていないみたいよ。https://github.com/chaspy/hanakintaro/blob/main/conf.ts におすすめの店を追加しよう",
   );
 });
 
@@ -191,7 +191,7 @@ Deno.test("Response function test -- GitHub is down", async () => {
       }),
       {
         status: 200,
-      }
+      },
     );
   });
 
@@ -199,7 +199,7 @@ Deno.test("Response function test -- GitHub is down", async () => {
   const { outputs } = await ResponseFunction(createContext({ inputs }));
   assertEquals(
     outputs?.response,
-    "今日は花金！GitHub が落ちてるみたいだからね。https://www.githubstatus.com/ "
+    "今日は花金！GitHub が落ちてるみたいだからね。https://www.githubstatus.com/ ",
   );
 
   mf.uninstall();
@@ -222,7 +222,7 @@ Deno.test("Response function test -- GitHub API returns error", async () => {
 
   assertEquals(
     Object.values(conf.message).includes(`${outputs?.response}`),
-    true
+    true,
   );
 
   mf.uninstall();
@@ -255,6 +255,6 @@ Deno.test("Response function test -- leap year", async () => {
 
   assertEquals(
     outputs?.response,
-    "今日は4年に1度の閏日だからハイパーウルトラクアドラプル花金！やったね！"
+    "今日は4年に1度の閏日だからハイパーウルトラクアドラプル花金！やったね！",
   );
 });
